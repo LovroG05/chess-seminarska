@@ -5,7 +5,8 @@ import lombok.Setter;
 import ml.perchperkins.objects.enums.FigureName;
 import ml.perchperkins.objects.enums.GameStatus;
 //import ml.perchperkins.objects.io.GameUpdateOutput;
-import ml.perchperkins.objects.io.MoveInput;
+import ml.perchperkins.objects.io.GameUpdate;
+import ml.perchperkins.objects.io.NewMove;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,19 +56,64 @@ public class Game {
 
         StringBuilder fen = new StringBuilder();
 
-        for (int y = 0; y < 8; y++) {
+//        for (int y = 0; y < 8; y++) {
+//            int empty = 0;
+//            StringBuilder rankS = new StringBuilder();
+//            for (int x = 0; x < 8; x++) {
+//                Figure figure = chessboard[x][y];
+//                if (figure != null) {
+//                    String f = figure.getFenNotation().toString();
+//                    if (figure.isWhite()) {
+//                        f = f.toUpperCase();
+//                    } else {
+//                        f = f.toLowerCase();
+//                    }
+//                    if (empty != 0) {
+//                        rankS.append(empty);
+//                    }
+//                    rankS.append(f);
+//                } else {
+//                    empty++;
+//                }
+//            }
+//
+//            if (!rankS.isEmpty()) {
+//                fen.append(rankS);
+//            } else {
+//                fen.append(empty);
+//            }
+//            if (y < 7) {
+//                fen.append("/");
+//            }
+//        }
+
+        for (int y = 7; y >= 0; y--) {
+            int empty = 0;
+            StringBuilder rankS = new StringBuilder();
             for (int x = 0; x < 8; x++) {
                 Figure figure = chessboard[x][y];
-                String f = figure.getFenNotation().toString();
-                if (figure.isWhite()) {
-                    f = f.toUpperCase();
+                if (figure != null) {
+                    String f = figure.getFenNotation().toString();
+                    if (figure.isWhite()) {
+                        f = f.toUpperCase();
+                    } else {
+                        f = f.toLowerCase();
+                    }
+                    if (empty != 0) {
+                        rankS.append(empty);
+                    }
+                    rankS.append(f);
                 } else {
-                    f = f.toLowerCase();
+                    empty++;
                 }
-
-                fen.append(f);
             }
-            fen.append("/");
+            if (!rankS.isEmpty()) {
+                fen.append(rankS);
+            } else {
+                fen.append(empty);
+            }
+
+            if (y > 0) fen.append("/");
         }
 
         fen.append(" ");
@@ -76,21 +122,25 @@ public class Game {
         return fen.toString();
     }
 
-    public boolean makeMove(boolean whitePlayer, MoveInput move) {
+    public GameUpdate makeMove(boolean whitePlayer, NewMove move) {
         Figure[][] chessboard = renderChessBoard();
 
         if (chessboard[move.x()][move.y()] == null) {
-            return false; // move is invalid, no figure is on start coords
+            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
         }
 
         Figure figure = chessboard[move.x()][move.y()];
 
         if (figure.isWhite() != whitePlayer) {
-            return false; // move is invalid, no white figure is on start coords
+            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid, no correct color figure is on start coords
+        }
+
+        if (figure.isWhite() != whitesTurn) {
+            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid, not players turn
         }
 
         if (!figure.isValidMove(move.newx(), move.newy(), chessboard)) {
-            return false; // move is invalid by figure logic
+            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid by figure logic
         }
 
         if (chessboard[move.newx()][move.newy()] != null) {
@@ -107,7 +157,11 @@ public class Game {
             }
         }
 
-        return true;
+        figure.move(move.newx(), move.newy());
+        // register move in history
+        history.add(new Move(whitePlayer, move.x(), move.y(), move.newx(), move.newy(), figure));
+
+        return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
     }
 
     public GameStatus checkGameStatus() {
