@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="16b592d5-a5b3-4833-8a32-76453212f8d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/controllers/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/io/GameUpdate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/io/GameUpdate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/io/MoveInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/io/NewMove.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/utils/ChessUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/utils/ChessUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,21 +44,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lovro/Documents/Projects/chess-seminarska&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/lovro/Projects/chess-seminarska",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/ml/perchperkins" />
@@ -101,6 +98,7 @@
       <workItem from="1673784905367" duration="2910000" />
       <workItem from="1673788425657" duration="1381000" />
       <workItem from="1673804639860" duration="6562000" />
+      <workItem from="1673864336421" duration="5897000" />
     </task>
     <servers />
   </component>
@@ -112,8 +110,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java</url>
-          <line>125</line>
-          <option name="timeStamp" value="9" />
+          <line>55</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

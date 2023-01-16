@@ -7,6 +7,7 @@ import ml.perchperkins.objects.enums.GameStatus;
 //import ml.perchperkins.objects.io.GameUpdateOutput;
 import ml.perchperkins.objects.io.GameUpdate;
 import ml.perchperkins.objects.io.NewMove;
+import ml.perchperkins.utils.ChessUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,37 +57,6 @@ public class Game {
 
         StringBuilder fen = new StringBuilder();
 
-//        for (int y = 0; y < 8; y++) {
-//            int empty = 0;
-//            StringBuilder rankS = new StringBuilder();
-//            for (int x = 0; x < 8; x++) {
-//                Figure figure = chessboard[x][y];
-//                if (figure != null) {
-//                    String f = figure.getFenNotation().toString();
-//                    if (figure.isWhite()) {
-//                        f = f.toUpperCase();
-//                    } else {
-//                        f = f.toLowerCase();
-//                    }
-//                    if (empty != 0) {
-//                        rankS.append(empty);
-//                    }
-//                    rankS.append(f);
-//                } else {
-//                    empty++;
-//                }
-//            }
-//
-//            if (!rankS.isEmpty()) {
-//                fen.append(rankS);
-//            } else {
-//                fen.append(empty);
-//            }
-//            if (y < 7) {
-//                fen.append("/");
-//            }
-//        }
-
         for (int y = 7; y >= 0; y--) {
             int empty = 0;
             StringBuilder rankS = new StringBuilder();
@@ -99,19 +69,26 @@ public class Game {
                     } else {
                         f = f.toLowerCase();
                     }
+
+                    // če je potrebno appenda empty in ga nastavi na 0
                     if (empty != 0) {
                         rankS.append(empty);
+                        empty = 0;
                     }
+
+                    // appenda figuro
                     rankS.append(f);
                 } else {
+                    // figure na tem mestu ni zato poveča empty
                     empty++;
                 }
             }
+
+            // appenda karkol je ostalo če je potrebno
             if (!rankS.isEmpty()) {
                 fen.append(rankS);
-            } else {
-                fen.append(empty);
             }
+            if (empty != 0) fen.append(empty);
 
             if (y > 0) fen.append("/");
         }
