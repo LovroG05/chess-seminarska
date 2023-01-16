@@ -128,15 +128,16 @@ public class Game {
                 } else {
                     white.getFigures().remove(chessboard[move.newx()][move.newy()]);
                 }
-                figure.move(move.newx(), move.newy());
-                // register move in history
-                history.add(new Move(whitePlayer, move.x(), move.y(), move.newx(), move.newy(), figure));
+            } else {
+                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
             }
         }
 
         figure.move(move.newx(), move.newy());
         // register move in history
         history.add(new Move(whitePlayer, move.x(), move.y(), move.newx(), move.newy(), figure));
+
+        whitesTurn = !whitesTurn;
 
         return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
     }

@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="16b592d5-a5b3-4833-8a32-76453212f8d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/utils/ChessUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/utils/ChessUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +98,7 @@
       <workItem from="1673784905367" duration="2910000" />
       <workItem from="1673788425657" duration="1381000" />
       <workItem from="1673804639860" duration="6562000" />
-      <workItem from="1673864336421" duration="5897000" />
+      <workItem from="1673864336421" duration="6851000" />
     </task>
     <servers />
   </component>

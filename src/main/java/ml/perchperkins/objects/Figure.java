@@ -29,5 +29,6 @@ public class Figure {
     public void move(int new_x, int new_y) {
         coordX = new_x;
         coordY = new_y;
+        hasMoved = true;
     }
 }
