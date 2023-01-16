@@ -16,6 +16,8 @@ public class Rook extends Figure {
             return false;
         }
 
-        return getCoordX() == new_x || getCoordY() == new_y;
+        if (!(getCoordX() == new_x || getCoordY() == new_y)) return false;
+
+        return isWalkable(new_x, new_y, chessboard);
     }
 }

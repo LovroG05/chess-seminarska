@@ -32,18 +32,18 @@ public class Game {
     public Figure[][] renderChessBoard() {
         Figure[][] chessboard = new Figure[8][8];
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                chessboard[i][j] = null;
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                chessboard[x][y] = null;
             }
         }
 
         for (Figure figure : white.getFigures()) {
-            chessboard[figure.getCoordX()][figure.getCoordY()] = figure;
+            chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
         }
 
         for (Figure figure : black.getFigures()) {
-            chessboard[figure.getCoordX()][figure.getCoordY()] = figure;
+            chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
         }
 
 
@@ -61,7 +61,7 @@ public class Game {
             int empty = 0;
             StringBuilder rankS = new StringBuilder();
             for (int x = 0; x < 8; x++) {
-                Figure figure = chessboard[x][y];
+                Figure figure = chessboard[y][x];
                 if (figure != null) {
                     String f = figure.getFenNotation().toString();
                     if (figure.isWhite()) {
@@ -102,11 +102,11 @@ public class Game {
     public GameUpdate makeMove(boolean whitePlayer, NewMove move) {
         Figure[][] chessboard = renderChessBoard();
 
-        if (chessboard[move.x()][move.y()] == null) {
+        if (chessboard[move.y()][move.x()] == null) {
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
         }
 
-        Figure figure = chessboard[move.x()][move.y()];
+        Figure figure = chessboard[move.y()][move.x()];
 
         if (figure.isWhite() != whitePlayer) {
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid, no correct color figure is on start coords
@@ -120,13 +120,13 @@ public class Game {
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid by figure logic
         }
 
-        if (chessboard[move.newx()][move.newy()] != null) {
-            if (chessboard[move.newx()][move.newy()].isWhite() != whitePlayer) {
+        if (chessboard[move.newy()][move.newx()] != null) {
+            if (chessboard[move.newy()][move.newx()].isWhite() != whitePlayer) {
                 // opposite player's figure on coords, eat
                 if (whitePlayer) {
-                    black.getFigures().remove(chessboard[move.newx()][move.newy()]);
+                    black.getFigures().remove(chessboard[move.newy()][move.newx()]);
                 } else {
-                    white.getFigures().remove(chessboard[move.newx()][move.newy()]);
+                    white.getFigures().remove(chessboard[move.newy()][move.newx()]);
                 }
             } else {
                 return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
@@ -208,21 +208,4 @@ public class Game {
                 !king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, chessboard) &&
                 !king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, chessboard));
     }
-
-/*    public void start() {
-        if (white.isConnected() && black.isConnected()) {
-            hasStarted = true;
-            // the game should be started by the last player to join
-            // start message is just the first game update
-            GameUpdateOutput out = new GameUpdateOutput(renderChessBoard(), history, false, whitesTurn, checkGameStatus());
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                String out_s = mapper.writeValueAsString(out);
-                white.getUser().getRemote().sendString(out_s);
-                black.getUser().getRemote().sendString(out_s);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
 }

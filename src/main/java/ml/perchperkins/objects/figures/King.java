@@ -32,6 +32,8 @@ public class King extends Figure {
             }
         }
 
-        return (getCoordX() == new_x || getCoordY() == new_y) && diffX <= 1;
+        if (!((getCoordX() == new_x || getCoordY() == new_y) && diffX <= 1)) return false;
+
+        return isWalkable(new_x, new_y, chessboard);
     }
 }

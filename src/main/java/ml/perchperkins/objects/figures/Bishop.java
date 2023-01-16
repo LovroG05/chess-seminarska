@@ -19,6 +19,10 @@ public class Bishop extends Figure{
         int diffX = Math.abs(getCoordX() -new_x);
         int diffY = Math.abs(getCoordY() -new_y);
 
-        return diffX == diffY;
+        if (diffX != diffY) {
+            return false;
+        }
+
+        return isWalkable(new_x, new_y, chessboard);
     }
 }
