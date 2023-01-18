@@ -7,6 +7,7 @@
     <list default="true" id="16b592d5-a5b3-4833-8a32-76453212f8d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +101,7 @@
       <workItem from="1673864336421" duration="6851000" />
       <workItem from="1673887474132" duration="10372000" />
       <workItem from="1673988149253" duration="1269000" />
-      <workItem from="1674066505493" duration="1974000" />
+      <workItem from="1674066505493" duration="7532000" />
     </task>
     <servers />
   </component>
@@ -116,8 +117,8 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java</url>
-          <line>102</line>
-          <option name="timeStamp" value="22" />
+          <line>173</line>
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

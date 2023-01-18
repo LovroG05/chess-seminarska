@@ -27,6 +27,7 @@ public class Figure {
     }
 
     protected boolean isWalkable(int new_x, int new_y, Figure[][] chessboard) {
+        if (new_x < 0 || new_y < 0) return false;
         // če se premakne za eno je kill move...
         int diffX = Math.abs(getCoordX() - new_x);
         int diffY = Math.abs(getCoordY() - new_y);
@@ -65,7 +66,7 @@ public class Figure {
                 if (coordX > new_x) x = coordX - i;
                 int y = coordY + i;
                 if (coordY > new_y) y = coordY - i;
-                if (chessboard[y][x] != null) return false;
+                if ((chessboard[y][x] != null) && (x != new_x && y != new_y)) return false;
             }
         }
 

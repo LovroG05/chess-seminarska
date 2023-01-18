@@ -168,7 +168,7 @@ public class Game {
         }
 
         // stalemate
-        if (checkKingsMovement(king, chessboard)) return GameStatus.STALEMATE;
+        if (!checkKingsMovement(king, chessboard)) return GameStatus.STALEMATE;
 
         // check for black checks
         king = black.getFigures().stream()
@@ -192,20 +192,20 @@ public class Game {
         }
 
         // stalemate
-        if (checkKingsMovement(king, chessboard)) return GameStatus.STALEMATE;
+        if (!checkKingsMovement(king, chessboard)) return GameStatus.STALEMATE;
 
         return GameStatus.RUNNING;
     }
 
     private boolean checkKingsMovement(Figure king, Figure[][] chessboard) {
         // if true king can move
-        return (!king.isValidMove(king.getCoordX() + 1, king.getCoordY(), chessboard) &&
-                !king.isValidMove(king.getCoordX() - 1, king.getCoordY(), chessboard) &&
-                !king.isValidMove(king.getCoordX(), king.getCoordY() + 1, chessboard) &&
-                !king.isValidMove(king.getCoordX(), king.getCoordY() - 1, chessboard) &&
-                !king.isValidMove(king.getCoordX() + 1, king.getCoordY() + 1, chessboard) &&
-                !king.isValidMove(king.getCoordX() + 1, king.getCoordY() - 1, chessboard) &&
-                !king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, chessboard) &&
-                !king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, chessboard));
+        return (king.isValidMove(king.getCoordX() + 1, king.getCoordY(), chessboard) ||
+                king.isValidMove(king.getCoordX() - 1, king.getCoordY(), chessboard) ||
+                king.isValidMove(king.getCoordX(), king.getCoordY() + 1, chessboard) ||
+                king.isValidMove(king.getCoordX(), king.getCoordY() - 1, chessboard) ||
+                king.isValidMove(king.getCoordX() + 1, king.getCoordY() + 1, chessboard) ||
+                king.isValidMove(king.getCoordX() + 1, king.getCoordY() - 1, chessboard) ||
+                king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, chessboard) ||
+                king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, chessboard));
     }
 }
