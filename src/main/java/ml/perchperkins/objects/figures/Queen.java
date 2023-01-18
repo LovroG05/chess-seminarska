@@ -19,9 +19,6 @@ public class Queen extends Figure {
         int diffX = Math.abs(getCoordX() - new_x);
         int diffY = Math.abs(getCoordY() - new_y);
 
-        if (diffX == diffY) return true;
-
-        if (!(getCoordX() == new_x || getCoordY() == new_y)) return false;
-        return isWalkable(new_x, new_y, chessboard);
+        return (((diffX == diffY) || (getCoordX() == new_x || getCoordY() == new_y)) && isWalkable(new_x, new_y, chessboard));
     }
 }
