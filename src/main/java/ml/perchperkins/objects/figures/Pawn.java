@@ -50,7 +50,7 @@ public class Pawn extends Figure {
         if ((Math.abs(getCoordX() - new_x) == 1) && (Math.abs(getCoordY() - new_y) == 1)) {
             // eating, diagonal by 1
             // removing of ene
-            return (chessboard[new_x][new_y] != null) && (chessboard[new_x][new_y].isWhite() != isWhite());
+            return (chessboard[new_y][new_x] != null) && (chessboard[new_y][new_x].isWhite() != isWhite());
         }
 
 

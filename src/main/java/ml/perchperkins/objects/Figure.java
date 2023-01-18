@@ -27,16 +27,19 @@ public class Figure {
     }
 
     protected boolean isWalkable(int new_x, int new_y, Figure[][] chessboard) {
+        // če se premakne za eno je kill move...
+        int diffX = Math.abs(getCoordX() - new_x);
+        int diffY = Math.abs(getCoordY() - new_y);
+        if ((diffX == 1) || (diffY == 1)) return true;
+
         if (coordX == new_x) {
             // walk the vertical line
             if (coordY > new_y) {
                 for (int y = new_y; y < coordY; y++) {
-                    System.out.println(y);
                     if (chessboard[y][coordX] != null) return false;
                 }
             } else {
                 for (int y = coordY+1; y < new_y; y++) {
-                    System.out.println(y);
                     if (chessboard[y][coordX] != null) return false;
                 }
             }
