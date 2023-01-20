@@ -103,34 +103,25 @@ public class Game {
         Figure[][] chessboard = renderChessBoard();
 
         if (chessboard[move.y()][move.x()] == null) {
+            System.out.println("no piece");
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
         }
 
         Figure figure = chessboard[move.y()][move.x()];
 
         if (figure.isWhite() != whitePlayer) {
+            System.out.println("wrong figure color");
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid, no correct color figure is on start coords
         }
 
         if (figure.isWhite() != whitesTurn) {
+            System.out.println("wrong player");
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid, not players turn
         }
 
         if (!figure.isValidMove(move.newx(), move.newy(), chessboard)) {
+            System.out.println("move invalid");
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid by figure logic
-        }
-
-        if (chessboard[move.newy()][move.newx()] != null) {
-            if (chessboard[move.newy()][move.newx()].isWhite() != whitePlayer) {
-                // opposite player's figure on coords, eat
-                if (whitePlayer) {
-                    black.getFigures().remove(chessboard[move.newy()][move.newx()]);
-                } else {
-                    white.getFigures().remove(chessboard[move.newy()][move.newx()]);
-                }
-            } else {
-                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
-            }
         }
 
         figure.move(move.newx(), move.newy());
@@ -142,12 +133,29 @@ public class Game {
             if ((gs == GameStatus.WHITE_CHECK) || (gs == GameStatus.WHITE_CHECKMATE)) {
                 // return player to previous position, DONT SAVE
                 figure.move(move.x(), move.y());
+                System.out.println("check w");
                 return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
             }
         } else {
             if ((gs == GameStatus.BLACK_CHECK) || (gs == GameStatus.BLACK_CHECKMATE)) {
                 // return player to previous position, DONT SAVE
                 figure.move(move.x(), move.y());
+                System.out.println("check b");
+                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+            }
+        }
+
+        // prehranjevanje figur
+        if (chessboard[move.newy()][move.newx()] != null) {
+            if (chessboard[move.newy()][move.newx()].isWhite() != whitePlayer) {
+                // opposite player's figure on coords, eat
+                if (whitePlayer) {
+                    black.getFigures().remove(chessboard[move.newy()][move.newx()]);
+                } else {
+                    white.getFigures().remove(chessboard[move.newy()][move.newx()]);
+                }
+            } else {
+                System.out.println("same color in dest sq");
                 return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
             }
         }

@@ -67,11 +67,9 @@ public class Figure {
                 if (coordX > new_x) x = coordX - i;
                 int y = coordY + i;
                 if (coordY > new_y) y = coordY - i;
-                if ((chessboard[y-1][x-1] != null) && (x != new_x && y != new_y)) return false;
+                if ((chessboard[y][x] != null) && (x != new_x && y != new_y)) return false;
             }
         }
-
-
 
         return true;
     }
