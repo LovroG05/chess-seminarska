@@ -19,7 +19,7 @@ public class King extends Figure {
         int diffX = Math.abs(getCoordX() -new_x);
         int diffY = Math.abs(getCoordY() -new_y);
 
-        if (diffX==diffY && diffX <= 1) return true;
+        if (diffX==diffY && diffX == 1) return true;
 
         // verify that king's new coords are safe
         for (int i = 0; i < 8; i++) {

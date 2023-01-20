@@ -35,9 +35,10 @@ public class Pawn extends Figure {
             }
         }
 
-        if ((Math.abs(getCoordY() - (new_y-1)) == 2) &&
+        if ((Math.abs(getCoordY() - (new_y)) == 2) &&
                 (Math.abs(getCoordX() - (new_x)) == 0) &&
-                (getCoordY() == 1 || getCoordY() == 6)) {
+                (getCoordY() == 1 || getCoordY() == 6) &&
+                !isHasMoved()) {
             // distance is 2
             // checks if forward
             if (isWhite()) {
@@ -54,6 +55,6 @@ public class Pawn extends Figure {
         }
 
 
-        return (getCoordX() == new_x);
+        return false;
     }
 }

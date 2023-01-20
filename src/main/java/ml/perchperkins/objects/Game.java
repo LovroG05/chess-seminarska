@@ -134,6 +134,22 @@ public class Game {
         }
 
         figure.move(move.newx(), move.newy());
+
+        if (figure.isWhite()) {
+            GameStatus gs = checkGameStatus();
+            if ((gs == GameStatus.WHITE_CHECK) || (gs == GameStatus.WHITE_CHECKMATE)) {
+                // return player to previous position, DONT SAVE
+                figure.move(move.x(), move.y());
+                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+            }
+        } else {
+            GameStatus gs = checkGameStatus();
+            if ((gs == GameStatus.BLACK_CHECK) || (gs == GameStatus.BLACK_CHECKMATE)) {
+                // return player to previous position, DONT SAVE
+                figure.move(move.x(), move.y());
+                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+            }
+        }
         // register move in history
         history.add(new Move(whitePlayer, move.x(), move.y(), move.newx(), move.newy(), figure));
 
