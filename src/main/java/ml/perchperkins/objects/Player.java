@@ -18,10 +18,7 @@ public class Player {
     @Getter
     @Setter
     private boolean isConnected = false;
-
-    @Getter
-    @Setter
-    private Session user;
+    public Session user;
     public Player(boolean white) {
         isWhite = white;
 

@@ -1,17 +1,20 @@
 package ml.perchperkins.objects;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import ml.perchperkins.objects.enums.FigureName;
 import ml.perchperkins.objects.enums.GameStatus;
-//import ml.perchperkins.objects.io.GameUpdateOutput;
 import ml.perchperkins.objects.io.GameUpdate;
 import ml.perchperkins.objects.io.NewMove;
-import ml.perchperkins.utils.ChessUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
     @Getter
@@ -19,15 +22,17 @@ public class Game {
     @Getter
     @Setter
     private boolean whitesTurn = true;
-    @Getter
-    @Setter
-    private Player white = new Player(true);
-    @Getter
-    @Setter
-    private Player black = new Player(false);
+
+    public Map<String, Player> players = new ConcurrentHashMap<>();
+
     @Getter
     @Setter
     private List<Move> history = new ArrayList<Move>();
+
+    public Game() {
+        players.put("white", new Player(true));
+        players.put("black", new Player(false));
+    }
 
     public Figure[][] renderChessBoard() {
         Figure[][] chessboard = new Figure[8][8];
@@ -38,11 +43,11 @@ public class Game {
             }
         }
 
-        for (Figure figure : white.getFigures()) {
+        for (Figure figure : players.get("white").getFigures()) {
             chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
         }
 
-        for (Figure figure : black.getFigures()) {
+        for (Figure figure : players.get("black").getFigures()) {
             chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
         }
 
@@ -153,9 +158,9 @@ public class Game {
             if (chessboard[move.newy()][move.newx()].isWhite() != whitePlayer) {
                 // opposite player's figure on coords, eat
                 if (whitePlayer) {
-                    black.getFigures().remove(chessboard[move.newy()][move.newx()]);
+                    players.get("black").getFigures().remove(chessboard[move.newy()][move.newx()]);
                 } else {
-                    white.getFigures().remove(chessboard[move.newy()][move.newx()]);
+                    players.get("white").getFigures().remove(chessboard[move.newy()][move.newx()]);
                 }
             } else {
                 System.out.println("same color in dest sq");
@@ -179,7 +184,7 @@ public class Game {
 
         // check for checks
         // check for white checks
-        Figure king = white.getFigures().stream()
+        Figure king = players.get("white").getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
                 .orElse(null);
@@ -187,7 +192,7 @@ public class Game {
             return GameStatus.WTF_KING_DISSAPEARED;
         }
         Figure[][] chessboard = renderChessBoard();
-        for (Figure figure : black.getFigures()) {
+        for (Figure figure : players.get("black").getFigures()) {
             if (!toExclude.contains(figure)) {
                 if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {
                     // check if the white king can move
@@ -205,7 +210,7 @@ public class Game {
         if (!checkKingsMovement(king, chessboard)) return GameStatus.STALEMATE;
 
         // check for black checks
-        king = black.getFigures().stream()
+        king = players.get("black").getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
                 .orElse(null);
@@ -213,7 +218,7 @@ public class Game {
             return GameStatus.WTF_KING_DISSAPEARED;
         }
 
-        for (Figure figure : white.getFigures()) {
+        for (Figure figure : players.get("white").getFigures()) {
             if (!toExclude.contains(figure)) {
                 if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {
                     // check if the white king can move
@@ -243,5 +248,17 @@ public class Game {
                 king.isValidMove(king.getCoordX() + 1, king.getCoordY() - 1, chessboard) ||
                 king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, chessboard) ||
                 king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, chessboard));
+    }
+
+    public void broadcastGameInfo() {
+        players.entrySet().stream().filter(e -> e.getValue().user.isOpen()).forEach(entry -> {
+            try {
+                GameUpdate gup = new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+                ObjectMapper mapper = new ObjectMapper();
+                entry.getValue().user.getRemote().sendString(mapper.writeValueAsString(gup));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

@@ -22,9 +22,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GameController {
-    @Getter
-    private static List<Game> games = new ArrayList<>();
-    public static Map<Session, UserSession> userUUIDmap = new ConcurrentHashMap<>();
+
+    public static Map<UUID, Game> games = new ConcurrentHashMap<>();
+//    private static List<Game> games = new ArrayList<>();
     public GameController() {
         Spark.webSocket("/game", WebSocketHandler.class); // apparently to nardi singleton???
         enableCORS("*", "*", "*");
@@ -37,7 +37,8 @@ public class GameController {
 
     private Object newGame(Request request, Response response) throws JsonProcessingException {
         Game game = new Game();
-        games.add(game);
+//        games.add(game);
+        games.put(game.getUuid(), game);
 
         GameUpdate gup = new GameUpdate(game.renderFEN(), game.getHistory(), game.getUuid().toString(), game.checkGameStatus());
         ObjectMapper mapper = new ObjectMapper();
@@ -56,13 +57,21 @@ public class GameController {
 
         NewMove nm = new NewMove(oldC[0], oldC[1], newC[0], newC[1]);
 
-        for (Game game : games) {
-            if (game.getUuid().equals(uuid)) {
-                GameUpdate gup = game.makeMove(mi.piece().charAt(0) == 'w', nm);
+//        for (Game game : games) {
+//            if (game.getUuid().equals(uuid)) {
+//                GameUpdate gup = game.makeMove(mi.piece().charAt(0) == 'w', nm);
+//
+//                response.header("Content-Type", "application/json");
+//                return mapper.writeValueAsString(gup);
+//            }
+//        }
 
-                response.header("Content-Type", "application/json");
-                return mapper.writeValueAsString(gup);
-            }
+        Game game = games.get(uuid);
+        if (game != null) {
+            GameUpdate gup = game.makeMove(mi.piece().charAt(0) == 'w', nm);
+
+            response.header("Content-Type", "application/json");
+            return mapper.writeValueAsString(gup);
         }
 
         response.status(404);
@@ -72,11 +81,10 @@ public class GameController {
     private Object getChessboard(Request request, Response response) throws JsonProcessingException {
         UUID uuid = UUID.fromString(request.splat()[0]);
 
-        for (Game game : games) {
-            if (game.getUuid().equals(uuid)) {
-                ObjectMapper mapper = new ObjectMapper();
-                return mapper.writeValueAsString(game.renderChessBoard());
-            }
+        Game game = games.get(uuid);
+        if (game != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(game.renderChessBoard());
         }
 
         response.status(404);
