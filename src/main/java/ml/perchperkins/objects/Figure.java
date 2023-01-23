@@ -27,12 +27,12 @@ public class Figure {
     }
 
     protected boolean isWalkable(int new_x, int new_y, Figure[][] chessboard) {
-        if (new_x <= 0 || new_y <= 0) return false;
+        if ((new_x < 0 || new_y < 0) || (new_x > 7 || new_y > 7)) return false; // ponavad pomaga če figura ne more vn iz polja
         // če se premakne za eno je kill move...
         int diffX = Math.abs(getCoordX() - new_x);
         int diffY = Math.abs(getCoordY() - new_y);
-        if ((diffX == 0) || (diffY == 0)) return true; // NO FUCKING MOVE AGAIN
-        if ((diffX == 1) || (diffY == 1)) return true;
+        if ((diffX == 0) && (diffY == 0)) return true; // nauč se razmišlat....
+        if ((diffX == 1) || (diffY == 1)) return true; // če se premakne za eno ne rabiš preverjat če je čez koga skoču
 
         if (coordX == new_x) {
             // walk the vertical line
@@ -67,7 +67,9 @@ public class Figure {
                 if (coordX > new_x) x = coordX - i;
                 int y = coordY + i;
                 if (coordY > new_y) y = coordY - i;
-                if ((chessboard[y][x] != null) && (x != new_x && y != new_y)) return false;
+                if ((y >= 0 && y <= 7) && (x >= 0 && x <= 7)) {
+                    if ((chessboard[y][x] != null) && (x != new_x && y != new_y)) return false;
+                }
             }
         }
 

@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/King.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +55,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -103,7 +103,8 @@
       <workItem from="1673887474132" duration="10372000" />
       <workItem from="1673988149253" duration="1269000" />
       <workItem from="1674066505493" duration="7532000" />
-      <workItem from="1674222496018" duration="3069000" />
+      <workItem from="1674222496018" duration="5706000" />
+      <workItem from="1674468579040" duration="2099000" />
     </task>
     <servers />
   </component>
@@ -118,9 +119,9 @@
           <option name="timeStamp" value="20" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/King.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Rook.java</url>
           <line>14</line>
-          <option name="timeStamp" value="40" />
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

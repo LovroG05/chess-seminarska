@@ -128,7 +128,9 @@ public class Game {
 
 
         // shut the fuck up @everyone i just moved the figure ill move it back if this is wrong
-        GameStatus gs = checkGameStatus();
+        List<Figure> l = new ArrayList<>();
+        l.add(chessboard[move.newy()][move.newx()]);
+        GameStatus gs = checkGameStatus(l);
         if (figure.isWhite()) {
             if ((gs == GameStatus.WHITE_CHECK) || (gs == GameStatus.WHITE_CHECKMATE)) {
                 // return player to previous position, DONT SAVE
@@ -146,6 +148,7 @@ public class Game {
         }
 
         // prehranjevanje figur
+        // je namensko ZA preverjanjom ali premik povzroči šah ker se drugače igralec ki ga pojemo ne šteje
         if (chessboard[move.newy()][move.newx()] != null) {
             if (chessboard[move.newy()][move.newx()].isWhite() != whitePlayer) {
                 // opposite player's figure on coords, eat
@@ -168,6 +171,10 @@ public class Game {
     }
 
     public GameStatus checkGameStatus() {
+        return checkGameStatus(new ArrayList<Figure>());
+    }
+
+    public GameStatus checkGameStatus(List<Figure> toExclude) {
         // checkmate, check, stalemate, running
 
         // check for checks
@@ -181,14 +188,16 @@ public class Game {
         }
         Figure[][] chessboard = renderChessBoard();
         for (Figure figure : black.getFigures()) {
-            if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {
-                // check if the white king can move
-                if (!checkKingsMovement(king, chessboard)) {
-                    // white king cant move, checkmate
-                    return GameStatus.WHITE_CHECKMATE;
+            if (!toExclude.contains(figure)) {
+                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {
+                    // check if the white king can move
+                    if (!checkKingsMovement(king, chessboard)) {
+                        // white king cant move, checkmate
+                        return GameStatus.WHITE_CHECKMATE;
+                    }
+                    // white king in danger!
+                    return GameStatus.WHITE_CHECK;
                 }
-                // white king in danger!
-                return GameStatus.WHITE_CHECK;
             }
         }
 
@@ -205,14 +214,16 @@ public class Game {
         }
 
         for (Figure figure : white.getFigures()) {
-            if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {
-                // check if the white king can move
-                if (!checkKingsMovement(king, chessboard)) {
-                    // black king cant move, checkmate
-                    return GameStatus.BLACK_CHECKMATE;
+            if (!toExclude.contains(figure)) {
+                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {
+                    // check if the white king can move
+                    if (!checkKingsMovement(king, chessboard)) {
+                        // black king cant move, checkmate
+                        return GameStatus.BLACK_CHECKMATE;
+                    }
+                    // black king in danger!
+                    return GameStatus.BLACK_CHECK;
                 }
-                // black king in danger!
-                return GameStatus.BLACK_CHECK;
             }
         }
 
