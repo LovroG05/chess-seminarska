@@ -3,23 +3,30 @@ package ml.perchperkins.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
+import ml.perchperkins.handlers.WebSocketHandler;
 import ml.perchperkins.objects.Game;
+import ml.perchperkins.objects.UserSession;
 import ml.perchperkins.objects.io.GameUpdate;
 import ml.perchperkins.objects.io.MoveInput;
 import ml.perchperkins.objects.io.NewMove;
 import ml.perchperkins.utils.ChessUtils;
+import org.eclipse.jetty.websocket.api.Session;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameController {
     @Getter
-    private List<Game> games = new ArrayList<>();
+    private static List<Game> games = new ArrayList<>();
+    public static Map<Session, UserSession> userUUIDmap = new ConcurrentHashMap<>();
     public GameController() {
+        Spark.webSocket("/game", WebSocketHandler.class); // apparently to nardi singleton???
         enableCORS("*", "*", "*");
         Spark.path("/g", ()->{
            Spark.get("/new", this::newGame);
