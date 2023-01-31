@@ -30,6 +30,8 @@ public class WebSocketHandler {
         if (GameController.games.get(uuid).players.get("white").user != null && GameController.games.get(uuid).players.get("black").user != null) {
             GameController.games.get(uuid).broadcastGameInfo();
         }
+
+        System.out.println("User " + isWhite + " has connected to game " + uuid);
     }
 
     @OnWebSocketClose

@@ -8,6 +8,7 @@ import ml.perchperkins.objects.Game;
 import ml.perchperkins.objects.UserSession;
 import ml.perchperkins.objects.io.GameUpdate;
 import ml.perchperkins.objects.io.MoveInput;
+import ml.perchperkins.objects.io.NewGame;
 import ml.perchperkins.objects.io.NewMove;
 import ml.perchperkins.utils.ChessUtils;
 import org.eclipse.jetty.websocket.api.Session;
@@ -30,6 +31,7 @@ public class GameController {
         enableCORS("*", "*", "*");
         Spark.path("/g", ()->{
            Spark.get("/new", this::newGame);
+           Spark.get("/*/join", this::joinGame);
            Spark.post("/*/move", this::move);
            Spark.get("/*/chessboard", this::getChessboard);
         });
@@ -37,10 +39,9 @@ public class GameController {
 
     private Object newGame(Request request, Response response) throws JsonProcessingException {
         Game game = new Game();
-//        games.add(game);
         games.put(game.getUuid(), game);
 
-        GameUpdate gup = new GameUpdate(game.renderFEN(), game.getHistory(), game.getUuid().toString(), game.checkGameStatus());
+        NewGame gup = new NewGame(game.renderFEN(), game.getHistory(), game.getUuid().toString(), game.checkGameStatus(), true);
         ObjectMapper mapper = new ObjectMapper();
 
         response.header("Content-Type", "application/json");
@@ -57,15 +58,6 @@ public class GameController {
 
         NewMove nm = new NewMove(oldC[0], oldC[1], newC[0], newC[1]);
 
-//        for (Game game : games) {
-//            if (game.getUuid().equals(uuid)) {
-//                GameUpdate gup = game.makeMove(mi.piece().charAt(0) == 'w', nm);
-//
-//                response.header("Content-Type", "application/json");
-//                return mapper.writeValueAsString(gup);
-//            }
-//        }
-
         Game game = games.get(uuid);
         if (game != null) {
             GameUpdate gup = game.makeMove(mi.piece().charAt(0) == 'w', nm);
@@ -76,6 +68,17 @@ public class GameController {
 
         response.status(404);
         return "No game with such UUID";
+    }
+
+    private Object joinGame(Request request, Response response) throws JsonProcessingException {
+        UUID uuid = UUID.fromString(request.splat()[0]);
+        Game game = games.get(uuid);
+
+        NewGame gup = new NewGame(game.renderFEN(), game.getHistory(), game.getUuid().toString(), game.checkGameStatus(), false);
+        ObjectMapper mapper = new ObjectMapper();
+
+        response.header("Content-Type", "application/json");
+        return mapper.writeValueAsString(gup);
     }
 
     private Object getChessboard(Request request, Response response) throws JsonProcessingException {

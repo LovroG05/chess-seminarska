@@ -5,10 +5,11 @@ import ml.perchperkins.objects.enums.GameStatus;
 
 import java.util.List;
 
-public record GameUpdate(
+public record NewGame(
         String fen,
         List<Move> history,
         String uuid,
-        GameStatus status
-        ) {
+        GameStatus status,
+        boolean isWhite
+) {
 }

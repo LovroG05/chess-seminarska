@@ -251,10 +251,12 @@ public class Game {
     }
 
     public void broadcastGameInfo() {
-        players.entrySet().stream().filter(e -> e.getValue().user.isOpen()).forEach(entry -> {
+
+        players.entrySet().stream().filter(e -> e.getValue().user != null && e.getValue().user.isOpen()).forEach(entry -> {
             try {
                 GameUpdate gup = new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
                 ObjectMapper mapper = new ObjectMapper();
+                System.out.println("sending to: " + entry.getValue().isWhite());
                 entry.getValue().user.getRemote().sendString(mapper.writeValueAsString(gup));
             } catch (IOException e) {
                 e.printStackTrace();

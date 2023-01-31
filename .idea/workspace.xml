@@ -10,6 +10,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/handlers/WebSocketHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/handlers/WebSocketHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/io/GameUpdate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/io/GameUpdate.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +108,10 @@
       <workItem from="1674066505493" duration="7532000" />
       <workItem from="1674222496018" duration="5706000" />
       <workItem from="1674468579040" duration="7495000" />
-      <workItem from="1674492550955" duration="5917000" />
+      <workItem from="1674492550955" duration="6851000" />
+      <workItem from="1674846049494" duration="4838000" />
+      <workItem from="1674905949810" duration="137000" />
+      <workItem from="1674984169435" duration="7741000" />
     </task>
     <servers />
   </component>
@@ -121,11 +125,6 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="20" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Rook.java</url>
-          <line>14</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
