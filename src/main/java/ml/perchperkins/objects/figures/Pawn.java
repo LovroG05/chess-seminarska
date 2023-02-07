@@ -16,10 +16,6 @@ public class Pawn extends Figure {
             return false; // no move
         }
 
-/*        if (!isWalkable(new_x, new_y, chessboard)) {
-            return false;
-        }*/
-
         if ((Math.abs(new_y - getCoordY()) == 1) && (Math.abs(new_x - getCoordX()) == 0)) {
             // distance is 1
             // checks if forward relative to colour and SPOT IS EMPTY BECAUSE IT CANNOT EAT FORWARD
@@ -42,10 +38,12 @@ public class Pawn extends Figure {
                 !isHasMoved()) {
             // distance is 2
             // checks if forward
-            if (isWhite()) {
-                return (getCoordY() < new_y) && isWalkable(new_x, new_y, chessboard);
-            } else {
-                return (getCoordY() > new_y) && isWalkable(new_x, new_y, chessboard);
+            if (chessboard[new_y][new_x] == null) {
+                if (isWhite()) {
+                    return (getCoordY() < new_y) && isWalkable(new_x, new_y, chessboard);
+                } else {
+                    return (getCoordY() > new_y) && isWalkable(new_x, new_y, chessboard);
+                }
             }
         }
 
@@ -54,7 +52,6 @@ public class Pawn extends Figure {
             // removing of ene
             return (chessboard[new_y][new_x] != null) && (chessboard[new_y][new_x].isWhite() != isWhite());
         }
-
 
         return false;
     }

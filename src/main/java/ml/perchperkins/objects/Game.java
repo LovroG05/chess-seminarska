@@ -46,15 +46,12 @@ public class Game {
             chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
         }
 
-
         return chessboard;
     }
 
     public String renderFEN() {
         // https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
-
         Figure[][] chessboard = renderChessBoard();
-
         StringBuilder fen = new StringBuilder();
 
         for (int y = 7; y >= 0; y--) {
@@ -179,6 +176,7 @@ public class Game {
 
         // check for checks
         // check for white checks
+        Figure[][] chessboard = renderChessBoard();
         Figure king = white.getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
@@ -186,7 +184,6 @@ public class Game {
         if (king == null) {
             return GameStatus.WTF_KING_DISSAPEARED;
         }
-        Figure[][] chessboard = renderChessBoard();
         for (Figure figure : black.getFigures()) {
             if (!toExclude.contains(figure)) {
                 if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {

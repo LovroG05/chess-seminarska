@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import ml.perchperkins.objects.Game;
+import ml.perchperkins.objects.enums.GameStatus;
 import ml.perchperkins.objects.io.GameUpdate;
 import ml.perchperkins.objects.io.MoveInput;
 import ml.perchperkins.objects.io.NewMove;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 public class GameController {
     @Getter
-    private List<Game> games = new ArrayList<>();
+    private static List<Game> games = new ArrayList<>();
     public GameController() {
         enableCORS("*", "*", "*");
         Spark.path("/g", ()->{
@@ -52,6 +53,9 @@ public class GameController {
         for (Game game : games) {
             if (game.getUuid().equals(uuid)) {
                 GameUpdate gup = game.makeMove(mi.piece().charAt(0) == 'w', nm);
+                if (gup.status() == GameStatus.BLACK_CHECKMATE || gup.status() == GameStatus.WHITE_CHECKMATE || gup.status() == GameStatus.STALEMATE) {
+                    games.remove(game);
+                }
 
                 response.header("Content-Type", "application/json");
                 return mapper.writeValueAsString(gup);
