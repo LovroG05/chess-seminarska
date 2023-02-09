@@ -4,6 +4,9 @@ import ml.perchperkins.objects.Figure;
 import ml.perchperkins.objects.enums.FigureFENNotation;
 import ml.perchperkins.objects.enums.FigureName;
 
+/**
+ * Razred kmeta ki razširi razred Figure
+ */
 public class Pawn extends Figure {
     public Pawn(int x, int y, boolean white) {
         super(x, y, white);
@@ -11,6 +14,16 @@ public class Pawn extends Figure {
         setFenNotation(FigureFENNotation.P);
     }
 
+    /**
+     * Metoda specifična za razred Pawn
+     *
+     * @param new_x nov X premika
+     * @param new_y nov Y premika
+     * @param chessboard tabela šahovnice
+     * @return boolean true če je premik možen
+     *
+     *
+     */
     public boolean isValidMove(int new_x, int new_y, Figure[][] chessboard) {
         if (getCoordX() == new_x && getCoordY() == new_y) {
             return false; // no move

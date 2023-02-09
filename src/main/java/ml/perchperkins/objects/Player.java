@@ -8,6 +8,9 @@ import org.eclipse.jetty.websocket.api.Session;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Razred predstavlja igralca
+ */
 public class Player {
     @Getter
     @Setter

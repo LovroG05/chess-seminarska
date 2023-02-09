@@ -29,6 +29,13 @@ public class Game {
     @Setter
     private List<Move> history = new ArrayList<Move>();
 
+    /**
+     * zgradi tabelo šahovnice
+     *
+     * @return Figure[][] tabela, ki predstavlja šahovnico
+     *
+     *
+     */
     public Figure[][] renderChessBoard() {
         Figure[][] chessboard = new Figure[8][8];
 
@@ -49,6 +56,14 @@ public class Game {
         return chessboard;
     }
 
+    /**
+     * zgradi FEN string iz šahovnice
+     * <a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">...</a>
+     * implementacija ne vklučuje polj za castling, en passant, halfmove clock in fullmove number
+     *
+     * @return String FEN string
+     *
+     */
     public String renderFEN() {
         // https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
         Figure[][] chessboard = renderChessBoard();
@@ -96,6 +111,11 @@ public class Game {
         return fen.toString();
     }
 
+    /**
+     * @param whitePlayer je igralec bel?
+     * @param move objekt NewMove, ki opiše premik
+     * @return GameUpdate
+     */
     public GameUpdate makeMove(boolean whitePlayer, NewMove move) {
         Figure[][] chessboard = renderChessBoard();
 
@@ -167,10 +187,25 @@ public class Game {
         return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
     }
 
+    /**
+     * Metoda je namenjena preverjanju statusa igre (šah, šah mat, stalemate)
+     *
+     * @return GameStatus status igre v enumu
+     *
+     *
+     */
     public GameStatus checkGameStatus() {
         return checkGameStatus(new ArrayList<Figure>());
     }
 
+    /**
+     * Metoda je namenjena preverjanju statusa igre (šah, šah mat, stalemate)
+     *
+     * @param toExclude figure, ki jih ne želimo upoštevati
+     * @return GameStatus status igre v enumu
+     *
+     *
+     */
     public GameStatus checkGameStatus(List<Figure> toExclude) {
         // checkmate, check, stalemate, running
 
@@ -230,6 +265,11 @@ public class Game {
         return GameStatus.RUNNING;
     }
 
+    /**
+     * @param king Figura kralja
+     * @param chessboard tabela šahovnice
+     * @return boolean true če se kralj lahko premakne
+     */
     private boolean checkKingsMovement(Figure king, Figure[][] chessboard) {
         // if true king can move
         return (king.isValidMove(king.getCoordX() + 1, king.getCoordY(), chessboard) ||

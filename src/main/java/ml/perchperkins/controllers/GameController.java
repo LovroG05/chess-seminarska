@@ -20,6 +20,11 @@ import java.util.UUID;
 public class GameController {
     @Getter
     private static List<Game> games = new ArrayList<>();
+
+    /**
+     * Konstruktor razreda
+     * definira poti za spletni strežnik, prilagodi CORS
+     */
     public GameController() {
         enableCORS("*", "*", "*");
         Spark.path("/g", ()->{
@@ -29,6 +34,16 @@ public class GameController {
         });
     }
 
+    /**
+     * Naredi novo igro
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws JsonProcessingException
+     *
+     *
+     */
     private Object newGame(Request request, Response response) throws JsonProcessingException {
         Game game = new Game();
         games.add(game);
@@ -40,6 +55,16 @@ public class GameController {
         return mapper.writeValueAsString(gup);
     }
 
+    /**
+     * Handla premike
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws JsonProcessingException
+     *
+     *
+     */
     private Object move(Request request, Response response) throws JsonProcessingException {
         UUID uuid = UUID.fromString(request.splat()[0]);
         String body = request.body();
@@ -66,6 +91,16 @@ public class GameController {
         return "No game with such UUID";
     }
 
+    /**
+     * Vrne tabelo šahovnice
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws JsonProcessingException
+     *
+     *
+     */
     private Object getChessboard(Request request, Response response) throws JsonProcessingException {
         UUID uuid = UUID.fromString(request.splat()[0]);
 
@@ -80,6 +115,15 @@ public class GameController {
         return "No game with such UUID";
     }
 
+    /**
+     * metoda za prilagajanje CORS pravil
+     *
+     * @param origin origin
+     * @param methods metode
+     * @param headers headerji
+     *
+     *
+     */
     private static void enableCORS(final String origin, final String methods, final String headers) {
         Spark.options("/*", (request, response) -> {
 

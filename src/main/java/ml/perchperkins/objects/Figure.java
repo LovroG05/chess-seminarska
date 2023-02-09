@@ -5,6 +5,9 @@ import lombok.Setter;
 import ml.perchperkins.objects.enums.FigureFENNotation;
 import ml.perchperkins.objects.enums.FigureName;
 
+/**
+ * Razred Figure predstavlja šahovsko figuro
+ */
 @Getter
 @Setter
 public class Figure {
@@ -22,10 +25,30 @@ public class Figure {
         isWhite = white;
     }
 
+    /**
+     * metoda v tem razredu ni implementirana, saj je to osnovni razred figur.
+     *
+     * @param new_x nov x premika
+     * @param new_y nov y premika
+     * @param chessboard tabela šahovnice
+     * @return true če je premik možen
+     *
+     *
+     */
     public boolean isValidMove(int new_x, int new_y, Figure[][] chessboard) {
         return false;
     }
 
+    /**
+     * metoda preverja, če je na poti figure kakšna druga figura, ki bi ji pot blokirala
+     *
+     * @param new_x nov x premika
+     * @param new_y nov y premika
+     * @param chessboard tabela šahovnice
+     * @return true če je premik tja možen
+     *
+     *
+     */
     protected boolean isWalkable(int new_x, int new_y, Figure[][] chessboard) {
         if ((new_x < 0 || new_y < 0) || (new_x > 7 || new_y > 7)) return false; // ponavad pomaga če figura ne more vn iz polja
         int diffX = Math.abs(getCoordX() - new_x);
@@ -74,6 +97,14 @@ public class Figure {
         return true;
     }
 
+    /**
+     * Metoda naredi premik (nastavi koordinate figure) in nastavi hasMoved na true
+     *
+     * @param new_x nov x
+     * @param new_y nov y
+     *
+     *
+     */
     public void move(int new_x, int new_y) {
         coordX = new_x;
         coordY = new_y;

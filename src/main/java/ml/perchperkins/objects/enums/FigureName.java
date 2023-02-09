@@ -1,5 +1,8 @@
 package ml.perchperkins.objects.enums;
 
+/**
+ * Imena figur
+ */
 public enum FigureName {
     BISHOP,
     KING,

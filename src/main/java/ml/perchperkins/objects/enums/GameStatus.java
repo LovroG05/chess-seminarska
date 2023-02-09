@@ -1,5 +1,8 @@
 package ml.perchperkins.objects.enums;
 
+/**
+ * Statusi igre
+ */
 public enum GameStatus {
     RUNNING,
     WHITE_CHECK,
