@@ -5,6 +5,8 @@ import lombok.Setter;
 import ml.perchperkins.objects.enums.FigureFENNotation;
 import ml.perchperkins.objects.enums.FigureName;
 
+import java.util.List;
+
 /**
  * Razred Figure predstavlja šahovsko figuro
  */
@@ -14,7 +16,8 @@ public class Figure {
     private boolean isWhite;
     private int coordX;
     private int coordY;
-    private boolean hasMoved = false;
+//    private boolean hasMoved = false;
+    private int nOfMoves = 0;
     private FigureName name = FigureName.FIGURE;
 
     private FigureFENNotation fenNotation = FigureFENNotation.F;
@@ -30,12 +33,12 @@ public class Figure {
      *
      * @param new_x nov x premika
      * @param new_y nov y premika
-     * @param chessboard tabela šahovnice
+     * @param game instanca igre
      * @return true če je premik možen
      *
      *
      */
-    public boolean isValidMove(int new_x, int new_y, Figure[][] chessboard) {
+    public boolean isValidMove(int new_x, int new_y, Game game) {
         return false;
     }
 
@@ -108,6 +111,6 @@ public class Figure {
     public void move(int new_x, int new_y) {
         coordX = new_x;
         coordY = new_y;
-        setHasMoved(true);
+        nOfMoves++;
     }
 }

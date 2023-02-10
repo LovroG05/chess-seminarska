@@ -11,8 +11,6 @@ import lombok.Setter;
  * @param new_y nov y
  * @param figure figura
  */
-@Getter
-@Setter
 public record Move (
         boolean isWhites,
         int old_x,

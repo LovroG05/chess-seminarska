@@ -29,6 +29,8 @@ public class Game {
     @Setter
     private List<Move> history = new ArrayList<Move>();
 
+    private List<Figure> toEat = new ArrayList<>();
+
     /**
      * zgradi tabelo šahovnice
      *
@@ -136,7 +138,7 @@ public class Game {
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid, not players turn
         }
 
-        if (!figure.isValidMove(move.newx(), move.newy(), chessboard)) {
+        if (!figure.isValidMove(move.newx(), move.newy(), this)) {
             System.out.println("move invalid");
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid by figure logic
         }
@@ -145,19 +147,18 @@ public class Game {
 
 
         // shut the fuck up @everyone i just moved the figure ill move it back if this is wrong
-        List<Figure> l = new ArrayList<>();
-        l.add(chessboard[move.newy()][move.newx()]);
-        GameStatus gs = checkGameStatus(l);
+        addToEatList(chessboard[move.newy()][move.newx()]);
+        GameStatus gs = checkGameStatus(toEat);
         if (figure.isWhite()) {
             if ((gs == GameStatus.WHITE_CHECK) || (gs == GameStatus.WHITE_CHECKMATE)) {
-                // return player to previous position, DONT SAVE
+                // return player to previous position, DON'T SAVE
                 figure.move(move.x(), move.y());
                 System.out.println("check w");
                 return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
             }
         } else {
             if ((gs == GameStatus.BLACK_CHECK) || (gs == GameStatus.BLACK_CHECKMATE)) {
-                // return player to previous position, DONT SAVE
+                // return player to previous position, DON'T SAVE
                 figure.move(move.x(), move.y());
                 System.out.println("check b");
                 return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
@@ -166,19 +167,15 @@ public class Game {
 
         // prehranjevanje figur
         // je namensko ZA preverjanjom ali premik povzroči šah ker se drugače igralec ki ga pojemo ne šteje
-        if (chessboard[move.newy()][move.newx()] != null) {
-            if (chessboard[move.newy()][move.newx()].isWhite() != whitePlayer) {
-                // opposite player's figure on coords, eat
-                if (whitePlayer) {
-                    black.getFigures().remove(chessboard[move.newy()][move.newx()]);
-                } else {
-                    white.getFigures().remove(chessboard[move.newy()][move.newx()]);
-                }
+        for (Figure dead : toEat) {
+            if (dead.isWhite()) {
+                white.getFigures().remove(dead);
             } else {
-                System.out.println("same color in dest sq");
-                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+                black.getFigures().remove(dead);
             }
         }
+        clearToEatList();
+
         // register move in history
         history.add(new Move(whitePlayer, move.x(), move.y(), move.newx(), move.newy(), figure));
 
@@ -221,7 +218,7 @@ public class Game {
         }
         for (Figure figure : black.getFigures()) {
             if (!toExclude.contains(figure)) {
-                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {
+                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
                     // check if the white king can move
                     if (!checkKingsMovement(king, chessboard)) {
                         // white king cant move, checkmate
@@ -247,7 +244,7 @@ public class Game {
 
         for (Figure figure : white.getFigures()) {
             if (!toExclude.contains(figure)) {
-                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), chessboard)) {
+                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
                     // check if the white king can move
                     if (!checkKingsMovement(king, chessboard)) {
                         // black king cant move, checkmate
@@ -266,19 +263,35 @@ public class Game {
     }
 
     /**
+     * @param figure Figura ki je na poti v grob
+     */
+    public void addToEatList(Figure figure) {
+        if (figure != null && figure.isWhite() != whitesTurn) {
+            toEat.add(figure);
+        }
+    }
+
+    /**
+     * pobriše list za pojest
+     */
+    private void clearToEatList() {
+        toEat.clear();
+    }
+
+    /**
      * @param king Figura kralja
      * @param chessboard tabela šahovnice
-     * @return boolean true če se kralj lahko premakne
+     * @return boolean true, če se kralj lahko premakne
      */
     private boolean checkKingsMovement(Figure king, Figure[][] chessboard) {
         // if true king can move
-        return (king.isValidMove(king.getCoordX() + 1, king.getCoordY(), chessboard) ||
-                king.isValidMove(king.getCoordX() - 1, king.getCoordY(), chessboard) ||
-                king.isValidMove(king.getCoordX(), king.getCoordY() + 1, chessboard) ||
-                king.isValidMove(king.getCoordX(), king.getCoordY() - 1, chessboard) ||
-                king.isValidMove(king.getCoordX() + 1, king.getCoordY() + 1, chessboard) ||
-                king.isValidMove(king.getCoordX() + 1, king.getCoordY() - 1, chessboard) ||
-                king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, chessboard) ||
-                king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, chessboard));
+        return (king.isValidMove(king.getCoordX() + 1, king.getCoordY(), this) ||
+                king.isValidMove(king.getCoordX() - 1, king.getCoordY(), this) ||
+                king.isValidMove(king.getCoordX(), king.getCoordY() + 1, this) ||
+                king.isValidMove(king.getCoordX(), king.getCoordY() - 1, this) ||
+                king.isValidMove(king.getCoordX() + 1, king.getCoordY() + 1, this) ||
+                king.isValidMove(king.getCoordX() + 1, king.getCoordY() - 1, this) ||
+                king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, this) ||
+                king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, this));
     }
 }

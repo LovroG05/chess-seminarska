@@ -18,13 +18,7 @@ public class Player {
     @Getter
     @Setter
     private List<Figure> figures = new ArrayList<>();
-    @Getter
-    @Setter
-    private boolean isConnected = false;
 
-    @Getter
-    @Setter
-    private Session user;
     public Player(boolean white) {
         isWhite = white;
 
