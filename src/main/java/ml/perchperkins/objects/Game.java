@@ -119,6 +119,7 @@ public class Game {
      * @return GameUpdate
      */
     public GameUpdate makeMove(boolean whitePlayer, NewMove move) {
+        clearToEatList();
         Figure[][] chessboard = renderChessBoard();
 
         if (chessboard[move.y()][move.x()] == null) {
@@ -174,7 +175,6 @@ public class Game {
                 black.getFigures().remove(dead);
             }
         }
-        clearToEatList();
 
         // register move in history
         history.add(new Move(whitePlayer, move.x(), move.y(), move.newx(), move.newy(), figure));
@@ -220,7 +220,7 @@ public class Game {
             if (!toExclude.contains(figure)) {
                 if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
                     // check if the white king can move
-                    if (!checkKingsMovement(king, chessboard)) {
+                    if (!checkKingsMovement(king)) {
                         // white king cant move, checkmate
                         return GameStatus.WHITE_CHECKMATE;
                     }
@@ -231,7 +231,7 @@ public class Game {
         }
 
         // stalemate
-        if (!checkKingsMovement(king, chessboard)) return GameStatus.STALEMATE;
+        if (!checkKingsMovement(king)) return GameStatus.STALEMATE;
 
         // check for black checks
         king = black.getFigures().stream()
@@ -246,7 +246,7 @@ public class Game {
             if (!toExclude.contains(figure)) {
                 if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
                     // check if the white king can move
-                    if (!checkKingsMovement(king, chessboard)) {
+                    if (!checkKingsMovement(king)) {
                         // black king cant move, checkmate
                         return GameStatus.BLACK_CHECKMATE;
                     }
@@ -257,7 +257,7 @@ public class Game {
         }
 
         // stalemate
-        if (!checkKingsMovement(king, chessboard)) return GameStatus.STALEMATE;
+        if (!checkKingsMovement(king)) return GameStatus.STALEMATE;
 
         return GameStatus.RUNNING;
     }
@@ -280,10 +280,9 @@ public class Game {
 
     /**
      * @param king Figura kralja
-     * @param chessboard tabela šahovnice
      * @return boolean true, če se kralj lahko premakne
      */
-    private boolean checkKingsMovement(Figure king, Figure[][] chessboard) {
+    private boolean checkKingsMovement(Figure king) {
         // if true king can move
         return (king.isValidMove(king.getCoordX() + 1, king.getCoordY(), this) ||
                 king.isValidMove(king.getCoordX() - 1, king.getCoordY(), this) ||

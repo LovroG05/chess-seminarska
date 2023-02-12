@@ -6,16 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="16b592d5-a5b3-4833-8a32-76453212f8d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Move.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Bishop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/King.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Knight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Pawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Pawn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Queen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Rook.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +110,8 @@
       <workItem from="1675703250019" duration="552000" />
       <workItem from="1675705764556" duration="6108000" />
       <workItem from="1675796194560" duration="2566000" />
-      <workItem from="1676023397276" duration="11935000" />
+      <workItem from="1676023397276" duration="12490000" />
+      <workItem from="1676197304606" duration="1862000" />
     </task>
     <servers />
   </component>
@@ -143,16 +136,6 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="20" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java</url>
-          <line>151</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/Pawn.java</url>
-          <line>66</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
