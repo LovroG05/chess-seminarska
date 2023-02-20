@@ -293,4 +293,8 @@ public class Game {
                 king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, this) ||
                 king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, this));
     }
+
+    public void addToHistory(Move move) {
+        history.add(move);
+    }
 }

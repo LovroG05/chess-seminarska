@@ -1,7 +1,5 @@
 package ml.perchperkins.objects;
 
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @param isWhites je igralec bel?

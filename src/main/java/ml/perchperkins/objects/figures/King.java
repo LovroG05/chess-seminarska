@@ -44,7 +44,9 @@ public class King extends Figure {
                 Figure rook = chessboard[getCoordY()][7];
                 if (rook.getNOfMoves() == 0) {
                     if (isWalkable(new_x, new_y, chessboard) && rook.isValidMove(new_x-1, new_y, game)) {
+                        Move move = new Move(rook.isWhite(), rook.getCoordX(), rook.getCoordY(), new_x-1, new_y, rook);
                         rook.move(new_x-1, new_y);
+                        game.addToHistory(move);
                         return true;
                     }
                 }
@@ -53,7 +55,9 @@ public class King extends Figure {
                 Figure rook = chessboard[getCoordY()][0];
                 if (rook.getNOfMoves() == 0) {
                     if (isWalkable(new_x, new_y, chessboard) && rook.isValidMove(new_x+1, new_y, game)) {
+                        Move move = new Move(rook.isWhite(), rook.getCoordX(), rook.getCoordY(), new_x+1, new_y, rook);
                         rook.move(new_x+1, new_y);
+                        game.addToHistory(move);
                         return true;
                     }
                 }

@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="16b592d5-a5b3-4833-8a32-76453212f8d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Move.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/figures/King.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -111,7 +113,7 @@
       <workItem from="1675796194560" duration="2566000" />
       <workItem from="1676023397276" duration="12490000" />
       <workItem from="1676197304606" duration="1862000" />
-      <workItem from="1676888309190" duration="3662000" />
+      <workItem from="1676888309190" duration="7093000" />
     </task>
     <servers />
   </component>
@@ -136,11 +138,6 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="20" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java</url>
-          <line>141</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
