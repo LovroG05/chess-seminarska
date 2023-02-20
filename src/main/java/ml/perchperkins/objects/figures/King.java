@@ -28,12 +28,37 @@ public class King extends Figure {
      *
      */
     public boolean isValidMove(int new_x, int new_y, Game game) {
+        Figure[][] chessboard = game.renderChessBoard();
+
         if (getCoordX() == new_x && getCoordY() == new_y) {
             return false;
         }
 
         int diffX = Math.abs(getCoordX() -new_x);
         int diffY = Math.abs(getCoordY() -new_y);
+
+        // rošada al neki
+        if (diffX == 2 && getNOfMoves() == 0) {
+            if (new_x > getCoordX()) {
+                // castle u desno >>>>>
+                Figure rook = chessboard[getCoordY()][7];
+                if (rook.getNOfMoves() == 0) {
+                    if (isWalkable(new_x, new_y, chessboard) && rook.isValidMove(new_x-1, new_y, game)) {
+                        rook.move(new_x-1, new_y);
+                        return true;
+                    }
+                }
+            } else {
+                // castle u desno <<<<<
+                Figure rook = chessboard[getCoordY()][0];
+                if (rook.getNOfMoves() == 0) {
+                    if (isWalkable(new_x, new_y, chessboard) && rook.isValidMove(new_x+1, new_y, game)) {
+                        rook.move(new_x+1, new_y);
+                        return true;
+                    }
+                }
+            }
+        }
 
         if (diffX==diffY && diffX == 1) return true;
 
