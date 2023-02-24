@@ -12,13 +12,14 @@ import java.util.List;
  * @param history List zgodovine premikov
  * @param uuid UUID igre
  * @param status status igre
- *
+ * @param pawnPromotion true če lahko igralec, ki je zadnji naredil premik zamenja figuro
  *
  */
 public record GameUpdate(
         String fen,
         List<Move> history,
         String uuid,
-        GameStatus status
+        GameStatus status,
+        boolean pawnPromotion
         ) {
 }

@@ -19,6 +19,10 @@ public class Game {
     @Getter
     @Setter
     private boolean whitesTurn = true;
+
+    @Getter
+    @Setter
+    private boolean canPawnPromote = false;
     @Getter
     @Setter
     private Player white = new Player(true);
@@ -124,24 +128,24 @@ public class Game {
 
         if (chessboard[move.y()][move.x()] == null) {
             System.out.println("no piece");
-            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false);
         }
 
         Figure figure = chessboard[move.y()][move.x()];
 
         if (figure.isWhite() != whitePlayer) {
             System.out.println("wrong figure color");
-            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid, no correct color figure is on start coords
+            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false); // move is invalid, no correct color figure is on start coords
         }
 
         if (figure.isWhite() != whitesTurn) {
             System.out.println("wrong player");
-            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid, not players turn
+            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false); // move is invalid, not players turn
         }
 
         if (!figure.isValidMove(move.newx(), move.newy(), this)) {
             System.out.println("move invalid");
-            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus()); // move is invalid by figure logic
+            return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false); // move is invalid by figure logic
         }
 
         figure.move(move.newx(), move.newy());
@@ -155,14 +159,14 @@ public class Game {
                 // return player to previous position, DON'T SAVE
                 figure.move(move.x(), move.y());
                 System.out.println("check w");
-                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false);
             }
         } else {
             if ((gs == GameStatus.BLACK_CHECK) || (gs == GameStatus.BLACK_CHECKMATE)) {
                 // return player to previous position, DON'T SAVE
                 figure.move(move.x(), move.y());
                 System.out.println("check b");
-                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+                return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false);
             }
         }
 
@@ -181,7 +185,13 @@ public class Game {
 
         whitesTurn = !whitesTurn;
 
-        return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus());
+        boolean pawnPromotion = ((figure.getName() == FigureName.PAWN) &&
+                ((figure.isWhite() && figure.getCoordY() == 7) ||
+                        (figure.isWhite() && figure.getCoordY() == 0)));
+
+        canPawnPromote = pawnPromotion;
+
+        return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), pawnPromotion);
     }
 
     /**

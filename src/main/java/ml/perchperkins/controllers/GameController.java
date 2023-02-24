@@ -3,11 +3,14 @@ package ml.perchperkins.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
+import ml.perchperkins.objects.Figure;
 import ml.perchperkins.objects.Game;
 import ml.perchperkins.objects.enums.GameStatus;
+import ml.perchperkins.objects.figures.*;
 import ml.perchperkins.objects.io.GameUpdate;
 import ml.perchperkins.objects.io.MoveInput;
 import ml.perchperkins.objects.io.NewMove;
+import ml.perchperkins.objects.io.PawnPromotionInput;
 import ml.perchperkins.utils.ChessUtils;
 import spark.Request;
 import spark.Response;
@@ -16,6 +19,8 @@ import spark.Spark;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import ml.perchperkins.objects.enums.FigureFENNotation;
 
 public class GameController {
     @Getter
@@ -31,6 +36,7 @@ public class GameController {
            Spark.get("/new", this::newGame);
            Spark.post("/*/move", this::move);
            Spark.get("/*/chessboard", this::getChessboard);
+           Spark.post("/*/promote", this::promotePawn);
         });
     }
 
@@ -48,7 +54,7 @@ public class GameController {
         Game game = new Game();
         games.add(game);
 
-        GameUpdate gup = new GameUpdate(game.renderFEN(), game.getHistory(), game.getUuid().toString(), game.checkGameStatus());
+        GameUpdate gup = new GameUpdate(game.renderFEN(), game.getHistory(), game.getUuid().toString(), game.checkGameStatus(), false);
         ObjectMapper mapper = new ObjectMapper();
 
         response.header("Content-Type", "application/json");
@@ -108,6 +114,58 @@ public class GameController {
             if (game.getUuid().equals(uuid)) {
                 ObjectMapper mapper = new ObjectMapper();
                 return mapper.writeValueAsString(game.renderChessBoard());
+            }
+        }
+
+        response.status(404);
+        return "No game with such UUID";
+    }
+
+    private Object promotePawn(Request request, Response response) throws JsonProcessingException {
+        UUID uuid = UUID.fromString(request.splat()[0]);
+        String body = request.body();
+        ObjectMapper mapper = new ObjectMapper();
+        PawnPromotionInput ppi = mapper.readValue(body, PawnPromotionInput.class);
+
+
+        for (Game game : games) {
+            if (game.getUuid().equals(uuid)) {
+                if (game.isWhitesTurn() != ppi.isWhite() && game.isCanPawnPromote()) {
+                    Figure newf = null;
+                    switch (ppi.newFigureFEN()) {
+                        case "F":
+                            break;
+                        case "P":
+                            newf = new Pawn(ppi.x(), ppi.y(), ppi.isWhite());
+                            break;
+                        case "N":
+                            newf = new Knight(ppi.x(), ppi.y(), ppi.isWhite());
+                            break;
+                        case "B":
+                            newf = new Bishop(ppi.x(), ppi.y(), ppi.isWhite());
+                            break;
+                        case "R":
+                            newf = new Rook(ppi.x(), ppi.y(), ppi.isWhite());
+                            break;
+                        case "Q":
+                            newf = new Queen(ppi.x(), ppi.y(), ppi.isWhite());
+                            break;
+                        case "K":
+                            newf = new King(ppi.x(), ppi.y(), ppi.isWhite());
+                            break;
+                    }
+                    if (ppi.isWhite()) {
+                        int f = game.getWhite().getFigures().indexOf(game.renderChessBoard()[ppi.y()][ppi.x()]);
+
+                        if (newf != null) game.getWhite().getFigures().set(f, newf);
+                    } else {
+                        int f = game.getBlack().getFigures().indexOf(game.renderChessBoard()[ppi.y()][ppi.x()]);
+
+                        if (newf != null) game.getBlack().getFigures().set(f, newf);
+                    }
+                }
+                game.setCanPawnPromote(false);
+                return mapper.writeValueAsString(new GameUpdate(game.renderFEN(), game.getHistory(), uuid.toString(), game.checkGameStatus(), false));
             }
         }
 
