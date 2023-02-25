@@ -183,13 +183,14 @@ public class Game {
         // register move in history
         history.add(new Move(whitePlayer, move.x(), move.y(), move.newx(), move.newy(), figure));
 
-        whitesTurn = !whitesTurn;
+
 
         boolean pawnPromotion = ((figure.getName() == FigureName.PAWN) &&
                 ((figure.isWhite() && figure.getCoordY() == 7) ||
-                        (figure.isWhite() && figure.getCoordY() == 0)));
+                        (!figure.isWhite() && figure.getCoordY() == 0)));
 
         canPawnPromote = pawnPromotion;
+        whitesTurn = !whitesTurn;
 
         return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), pawnPromotion);
     }

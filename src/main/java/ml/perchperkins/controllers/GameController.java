@@ -121,6 +121,14 @@ public class GameController {
         return "No game with such UUID";
     }
 
+    /**
+     * promovira kmeta v izbrano figuro
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws JsonProcessingException
+     */
     private Object promotePawn(Request request, Response response) throws JsonProcessingException {
         UUID uuid = UUID.fromString(request.splat()[0]);
         String body = request.body();
@@ -133,35 +141,23 @@ public class GameController {
                 if (game.isWhitesTurn() != ppi.isWhite() && game.isCanPawnPromote()) {
                     Figure newf = null;
                     switch (ppi.newFigureFEN()) {
-                        case "F":
-                            break;
-                        case "P":
-                            newf = new Pawn(ppi.x(), ppi.y(), ppi.isWhite());
-                            break;
-                        case "N":
-                            newf = new Knight(ppi.x(), ppi.y(), ppi.isWhite());
-                            break;
-                        case "B":
-                            newf = new Bishop(ppi.x(), ppi.y(), ppi.isWhite());
-                            break;
-                        case "R":
-                            newf = new Rook(ppi.x(), ppi.y(), ppi.isWhite());
-                            break;
-                        case "Q":
-                            newf = new Queen(ppi.x(), ppi.y(), ppi.isWhite());
-                            break;
-                        case "K":
-                            newf = new King(ppi.x(), ppi.y(), ppi.isWhite());
-                            break;
+                        case "N" -> newf = new Knight(ppi.x(), ppi.y(), ppi.isWhite());
+                        case "B" -> newf = new Bishop(ppi.x(), ppi.y(), ppi.isWhite());
+                        case "R" -> newf = new Rook(ppi.x(), ppi.y(), ppi.isWhite());
+                        case "Q" -> newf = new Queen(ppi.x(), ppi.y(), ppi.isWhite());
+                        default -> {
+                            // nekak ti je ratal napačn string dobit skill issue
+                            return mapper.writeValueAsString(new GameUpdate(game.renderFEN(), game.getHistory(), uuid.toString(), game.checkGameStatus(), game.isCanPawnPromote()));
+                        }
                     }
                     if (ppi.isWhite()) {
                         int f = game.getWhite().getFigures().indexOf(game.renderChessBoard()[ppi.y()][ppi.x()]);
 
-                        if (newf != null) game.getWhite().getFigures().set(f, newf);
+                        game.getWhite().getFigures().set(f, newf);
                     } else {
                         int f = game.getBlack().getFigures().indexOf(game.renderChessBoard()[ppi.y()][ppi.x()]);
 
-                        if (newf != null) game.getBlack().getFigures().set(f, newf);
+                        game.getBlack().getFigures().set(f, newf);
                     }
                 }
                 game.setCanPawnPromote(false);
