@@ -218,8 +218,8 @@ public class Game {
         // checkmate, check, stalemate, running
 
         // check for checks
-        // check for white checks
-        Figure[][] chessboard = renderChessBoard();
+        // for white checks
+//        Figure[][] chessboard = renderChessBoard();
         Figure king = white.getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
@@ -242,7 +242,7 @@ public class Game {
         }
 
         // stalemate
-        if (!checkKingsMovement(king)) return GameStatus.STALEMATE;
+//        if (!checkKingsMovement(king)) return GameStatus.STALEMATE;
 
         // check for black checks
         king = black.getFigures().stream()
@@ -268,13 +268,13 @@ public class Game {
         }
 
         // stalemate
-        if (!checkKingsMovement(king)) return GameStatus.STALEMATE;
+//        if (!checkKingsMovement(king)) return GameStatus.STALEMATE;
 
         return GameStatus.RUNNING;
     }
 
     /**
-     * @param figure Figura ki je na poti v grob
+     * @param figure Figura, ki je na poti v grob
      */
     public void addToEatList(Figure figure) {
         if (figure != null && figure.isWhite() != whitesTurn) {
@@ -294,15 +294,23 @@ public class Game {
      * @return boolean true, če se kralj lahko premakne
      */
     private boolean checkKingsMovement(Figure king) {
+        boolean step1 = king.isValidMove(king.getCoordX() + 1, king.getCoordY(), this);
+        boolean step2 = king.isValidMove(king.getCoordX() - 1, king.getCoordY(), this);
+        boolean step3 = king.isValidMove(king.getCoordX(), king.getCoordY() + 1, this);
+        boolean step4 = king.isValidMove(king.getCoordX(), king.getCoordY() - 1, this);
+        boolean step5 = king.isValidMove(king.getCoordX() + 1, king.getCoordY() + 1, this);
+        boolean step6 = king.isValidMove(king.getCoordX() + 1, king.getCoordY() - 1, this);
+        boolean step7 = king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, this);
+        boolean step8 = king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, this);
         // if true king can move
-        return (king.isValidMove(king.getCoordX() + 1, king.getCoordY(), this) ||
-                king.isValidMove(king.getCoordX() - 1, king.getCoordY(), this) ||
-                king.isValidMove(king.getCoordX(), king.getCoordY() + 1, this) ||
-                king.isValidMove(king.getCoordX(), king.getCoordY() - 1, this) ||
-                king.isValidMove(king.getCoordX() + 1, king.getCoordY() + 1, this) ||
-                king.isValidMove(king.getCoordX() + 1, king.getCoordY() - 1, this) ||
-                king.isValidMove(king.getCoordX() - 1, king.getCoordY() + 1, this) ||
-                king.isValidMove(king.getCoordX() - 1, king.getCoordY() - 1, this));
+        return (step1 ||
+                step2 ||
+                step3 ||
+                step4 ||
+                step5 ||
+                step6 ||
+                step7 ||
+                step8);
     }
 
     public void addToHistory(Move move) {

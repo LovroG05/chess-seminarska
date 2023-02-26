@@ -28,11 +28,14 @@ public class King extends Figure {
      *
      */
     public boolean isValidMove(int new_x, int new_y, Game game) {
+        if (new_x < 0 || new_x > 7 || new_y < 0 || new_y > 7) return false;
         Figure[][] chessboard = game.renderChessBoard();
 
         if (getCoordX() == new_x && getCoordY() == new_y) {
             return false;
         }
+
+        if (chessboard[new_y][new_x] != null && chessboard[new_y][new_x].isWhite() == isWhite()) return false;
 
         int diffX = Math.abs(getCoordX() -new_x);
         int diffY = Math.abs(getCoordY() -new_y);
