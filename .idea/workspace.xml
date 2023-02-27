@@ -118,6 +118,7 @@
       <workItem from="1677320001973" duration="3236000" />
       <workItem from="1677411094704" duration="7197000" />
       <workItem from="1677440524312" duration="2060000" />
+      <workItem from="1677492853156" duration="1324000" />
     </task>
     <servers />
   </component>
@@ -142,11 +143,6 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="20" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java</url>
-          <line>296</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

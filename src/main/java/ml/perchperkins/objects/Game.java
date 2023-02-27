@@ -5,6 +5,7 @@ import lombok.Setter;
 import ml.perchperkins.objects.enums.FigureName;
 import ml.perchperkins.objects.enums.GameStatus;
 //import ml.perchperkins.objects.io.GameUpdateOutput;
+import ml.perchperkins.objects.figures.King;
 import ml.perchperkins.objects.io.GameUpdate;
 import ml.perchperkins.objects.io.NewMove;
 import ml.perchperkins.utils.ChessUtils;
@@ -220,7 +221,7 @@ public class Game {
         // check for checks
         // for white checks
 //        Figure[][] chessboard = renderChessBoard();
-        Figure king = white.getFigures().stream()
+        King king = (King) white.getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
                 .orElse(null);
@@ -242,10 +243,10 @@ public class Game {
         }
 
         // stalemate
-//        if (!checkKingsMovement(king)) return GameStatus.STALEMATE;
+//        if (!checkKingsMovement(king)) return GameStatus.STALEMATE; TODO
 
         // check for black checks
-        king = black.getFigures().stream()
+        king = (King) black.getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
                 .orElse(null);
@@ -268,7 +269,7 @@ public class Game {
         }
 
         // stalemate
-//        if (!checkKingsMovement(king)) return GameStatus.STALEMATE;
+//        if (!checkKingsMovement(king)) return GameStatus.STALEMATE; TODO
 
         return GameStatus.RUNNING;
     }
