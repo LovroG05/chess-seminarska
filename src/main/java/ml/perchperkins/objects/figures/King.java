@@ -28,6 +28,7 @@ public class King extends Figure {
      *
      */
     public boolean isValidMove(int new_x, int new_y, Game game) {
+        System.out.println("kralj check");
         if (new_x < 0 || new_x > 7 || new_y < 0 || new_y > 7) return false;
         Figure[][] chessboard = game.renderChessBoard();
 

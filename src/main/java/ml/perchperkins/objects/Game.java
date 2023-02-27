@@ -124,6 +124,7 @@ public class Game {
      * @return GameUpdate
      */
     public GameUpdate makeMove(boolean whitePlayer, NewMove move) {
+        System.out.println("---------- new move ------------");
         clearToEatList();
         Figure[][] chessboard = renderChessBoard();
 
@@ -191,9 +192,12 @@ public class Game {
                         (!figure.isWhite() && figure.getCoordY() == 0)));
 
         canPawnPromote = pawnPromotion;
+
+        gs = checkGameStatus();
+
         whitesTurn = !whitesTurn;
 
-        return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), pawnPromotion);
+        return new GameUpdate(renderFEN(), history, uuid.toString(), gs, pawnPromotion);
     }
 
     /**
@@ -221,7 +225,8 @@ public class Game {
         // check for checks
         // for white checks
 //        Figure[][] chessboard = renderChessBoard();
-        King king = (King) white.getFigures().stream()
+        System.out.println("check game status");
+        Figure king = white.getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
                 .orElse(null);
@@ -242,11 +247,8 @@ public class Game {
             }
         }
 
-        // stalemate
-//        if (!checkKingsMovement(king)) return GameStatus.STALEMATE; TODO
-
         // check for black checks
-        king = (King) black.getFigures().stream()
+        king = black.getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
                 .orElse(null);
@@ -268,8 +270,42 @@ public class Game {
             }
         }
 
-        // stalemate
-//        if (!checkKingsMovement(king)) return GameStatus.STALEMATE; TODO
+        // TODO stalemate bi mogu prevert premike USEH figur igralca ne sam kralja js pač ne znam brt
+        // preverjam za igralca k ma nasledn premik
+        // loopam čez figure in čez celo polje dokler ne najdem ene k se jo da premaknt
+        if (isWhitesTurn()) {
+            boolean isthereone = false;
+            for (Figure figure: black.getFigures()) {
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (figure.isValidMove(i, j, this)) {
+                            isthereone = true;
+                            break;
+                        }
+                    }
+                    if (isthereone) break;
+                }
+                if (isthereone) break;
+            }
+
+            if (!isthereone) return GameStatus.STALEMATE;
+        } else {
+            boolean isthereone = false;
+            for (Figure figure: white.getFigures()) {
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (figure.isValidMove(i, j, this)) {
+                            isthereone = true;
+                            break;
+                        }
+                    }
+                    if (isthereone) break;
+                }
+                if (isthereone) break;
+            }
+
+            if (!isthereone) return GameStatus.STALEMATE;
+        }
 
         return GameStatus.RUNNING;
     }
