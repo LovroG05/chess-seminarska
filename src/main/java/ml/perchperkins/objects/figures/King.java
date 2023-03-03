@@ -68,15 +68,17 @@ public class King extends Figure {
             }
         }
 
+        if (diffX > 1 || diffY > 1) return false;
+
         if (isWhite()) {
             for (Figure figure : game.getBlack().getFigures()) {
-                if (figure.isValidMove(new_x, new_y, game)) {
+                if (figure.isValidMove(new_x, new_y, game) && figure != this) {
                     return false;
                 }
             }
         } else {
             for (Figure figure : game.getWhite().getFigures()) {
-                if (figure.isValidMove(new_x, new_y, game)) {
+                if (figure.isValidMove(new_x, new_y, game) && figure != this) {
                     return false;
                 }
             }

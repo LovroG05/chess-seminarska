@@ -226,7 +226,7 @@ public class Game {
         // for white checks
 //        Figure[][] chessboard = renderChessBoard();
         System.out.println("check game status");
-        Figure king = white.getFigures().stream()
+        King king = (King) white.getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
                 .orElse(null);
@@ -234,7 +234,7 @@ public class Game {
             return GameStatus.WTF_KING_DISSAPEARED;
         }
         for (Figure figure : black.getFigures()) {
-            if (!toExclude.contains(figure)) {
+            if (!toExclude.contains(figure) && figure != king) {
                 if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
                     // check if the white king can move
                     if (!checkKingsMovement(king)) {
@@ -248,7 +248,7 @@ public class Game {
         }
 
         // check for black checks
-        king = black.getFigures().stream()
+        king = (King) black.getFigures().stream()
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
                 .findAny()
                 .orElse(null);
@@ -257,7 +257,7 @@ public class Game {
         }
 
         for (Figure figure : white.getFigures()) {
-            if (!toExclude.contains(figure)) {
+            if (!toExclude.contains(figure) && figure != king) {
                 if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
                     // check if the white king can move
                     if (!checkKingsMovement(king)) {
@@ -270,15 +270,15 @@ public class Game {
             }
         }
 
-        // TODO stalemate bi mogu prevert premike USEH figur igralca ne sam kralja js pač ne znam brt
+        // stalemate bi mogu prevert premike USEH figur igralca ne sam kralja js pač ne znam brt
         // preverjam za igralca k ma nasledn premik
         // loopam čez figure in čez celo polje dokler ne najdem ene k se jo da premaknt
+        boolean isthereone = false;
         if (isWhitesTurn()) {
-            boolean isthereone = false;
             for (Figure figure: black.getFigures()) {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        if (figure.isValidMove(i, j, this)) {
+                        if (figure.isValidMove(i, j, this) && (i != figure.getCoordX() && j != figure.getCoordY())) {
                             isthereone = true;
                             break;
                         }
@@ -288,13 +288,11 @@ public class Game {
                 if (isthereone) break;
             }
 
-            if (!isthereone) return GameStatus.STALEMATE;
         } else {
-            boolean isthereone = false;
             for (Figure figure: white.getFigures()) {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        if (figure.isValidMove(i, j, this)) {
+                        if (figure.isValidMove(i, j, this) && (i != figure.getCoordX() && j != figure.getCoordY())) {
                             isthereone = true;
                             break;
                         }
@@ -304,8 +302,8 @@ public class Game {
                 if (isthereone) break;
             }
 
-            if (!isthereone) return GameStatus.STALEMATE;
         }
+        if (!isthereone) return GameStatus.STALEMATE;
 
         return GameStatus.RUNNING;
     }
