@@ -28,8 +28,7 @@ public class Rook extends Figure {
      *
      */
     public boolean isValidMove(int new_x, int new_y, Game game) {
-        System.out.println("rook check");
-        Figure[][] chessboard = game.renderChessBoard();
+        Figure[][] chessboard = game.getChessboard();
         if (getCoordX() == new_x && getCoordY() == new_y) {
             return false;
         }

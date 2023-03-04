@@ -5,14 +5,14 @@ import lombok.Setter;
 import ml.perchperkins.objects.enums.FigureName;
 import ml.perchperkins.objects.enums.GameStatus;
 //import ml.perchperkins.objects.io.GameUpdateOutput;
-import ml.perchperkins.objects.figures.King;
+import ml.perchperkins.objects.figures.*;
 import ml.perchperkins.objects.io.GameUpdate;
 import ml.perchperkins.objects.io.NewMove;
-import ml.perchperkins.utils.ChessUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
 
 public class Game {
     @Getter
@@ -24,17 +24,54 @@ public class Game {
     @Getter
     @Setter
     private boolean canPawnPromote = false;
-    @Getter
-    @Setter
-    private Player white = new Player(true);
-    @Getter
-    @Setter
-    private Player black = new Player(false);
+//    @Getter
+//    @Setter
+//    private Player white = new Player(true);
+//    @Getter
+//    @Setter
+//    private Player black = new Player(false);
     @Getter
     @Setter
     private List<Move> history = new ArrayList<Move>();
 
     private List<Figure> toEat = new ArrayList<>();
+    @Getter
+    @Setter
+    private Figure[][] chessboard =  new Figure[8][8];
+
+    public Game() {
+        for (int i = 0; i < 8; i++) {
+            chessboard[1][i] = new Pawn(i, 1, true);
+        }
+
+        chessboard[0][0] = new Rook(0, 0, true);
+        chessboard[0][7] = new Rook(7, 0, true);
+
+        chessboard[0][1] = new Knight(1, 0, true);
+        chessboard[0][6] = new Knight(6, 0, true);
+
+        chessboard[0][2] = new Bishop(2, 0, true);
+        chessboard[0][5] = new Bishop(5, 0, true);
+
+        chessboard[0][3] = new Queen(3, 0, true);
+        chessboard[0][4] = new King(4, 0, true);
+
+        for (int i = 0; i < 8; i++) {
+            chessboard[6][i] = new Pawn(i, 6, false);
+        }
+
+        chessboard[7][0] = new Rook(0, 7, false);
+        chessboard[7][7] = new Rook(7, 7, false);
+
+        chessboard[7][1] = new Knight(1, 7, false);
+        chessboard[7][6] = new Knight(6, 7, false);
+
+        chessboard[7][2] = new Bishop(2, 7, false);
+        chessboard[7][5] = new Bishop(5, 7, false);
+
+        chessboard[7][3] = new Queen(3, 7, false);
+        chessboard[7][4] = new King(4, 7, false);
+    }
 
     /**
      * zgradi tabelo šahovnice
@@ -43,25 +80,25 @@ public class Game {
      *
      *
      */
-    public Figure[][] renderChessBoard() {
-        Figure[][] chessboard = new Figure[8][8];
-
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                chessboard[x][y] = null;
-            }
-        }
-
-        for (Figure figure : white.getFigures()) {
-            chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
-        }
-
-        for (Figure figure : black.getFigures()) {
-            chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
-        }
-
-        return chessboard;
-    }
+//    public Figure[][] renderChessBoard() {
+//        Figure[][] chessboard = new Figure[8][8];
+//
+//        for (int x = 0; x < 8; x++) {
+//            for (int y = 0; y < 8; y++) {
+//                chessboard[x][y] = null;
+//            }
+//        }
+//
+//        for (Figure figure : white.getFigures()) {
+//            chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
+//        }
+//
+//        for (Figure figure : black.getFigures()) {
+//            chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
+//        }
+//
+//        return chessboard;
+//    }
 
     /**
      * zgradi FEN string iz šahovnice
@@ -73,7 +110,7 @@ public class Game {
      */
     public String renderFEN() {
         // https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
-        Figure[][] chessboard = renderChessBoard();
+//        Figure[][] chessboard = renderChessBoard();
         StringBuilder fen = new StringBuilder();
 
         for (int y = 7; y >= 0; y--) {
@@ -124,9 +161,8 @@ public class Game {
      * @return GameUpdate
      */
     public GameUpdate makeMove(boolean whitePlayer, NewMove move) {
-        System.out.println("---------- new move ------------");
         clearToEatList();
-        Figure[][] chessboard = renderChessBoard();
+//        Figure[][] chessboard = renderChessBoard();
 
         if (chessboard[move.y()][move.x()] == null) {
             System.out.println("no piece");
@@ -150,6 +186,8 @@ public class Game {
             return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false); // move is invalid by figure logic
         }
 
+        chessboard[move.newy()][move.newx()] = figure;
+        chessboard[figure.getCoordY()][figure.getCoordX()] = null;
         figure.move(move.newx(), move.newy());
 
 
@@ -159,7 +197,10 @@ public class Game {
         if (figure.isWhite()) {
             if ((gs == GameStatus.WHITE_CHECK) || (gs == GameStatus.WHITE_CHECKMATE)) {
                 // return player to previous position, DON'T SAVE
+
                 figure.move(move.x(), move.y());
+                chessboard[move.newy()][move.newx()] = null;
+                chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
                 System.out.println("check w");
                 return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false);
             }
@@ -167,19 +208,17 @@ public class Game {
             if ((gs == GameStatus.BLACK_CHECK) || (gs == GameStatus.BLACK_CHECKMATE)) {
                 // return player to previous position, DON'T SAVE
                 figure.move(move.x(), move.y());
+                chessboard[move.newy()][move.newx()] = null;
+                chessboard[figure.getCoordY()][figure.getCoordX()] = figure;
                 System.out.println("check b");
                 return new GameUpdate(renderFEN(), history, uuid.toString(), checkGameStatus(), false);
             }
         }
 
         // prehranjevanje figur
-        // je namensko ZA preverjanjom ali premik povzroči šah ker se drugače igralec ki ga pojemo ne šteje
+        // je namensko ZA preverjanjem ali premik povzroči šah, ker se drugače igralec, ki ga pojemo ne šteje
         for (Figure dead : toEat) {
-            if (dead.isWhite()) {
-                white.getFigures().remove(dead);
-            } else {
-                black.getFigures().remove(dead);
-            }
+            chessboard[dead.getCoordY()][dead.getCoordX()] = null;
         }
 
         // register move in history
@@ -197,7 +236,7 @@ public class Game {
 
         whitesTurn = !whitesTurn;
 
-        return new GameUpdate(renderFEN(), history, uuid.toString(), gs, pawnPromotion);
+        return  new GameUpdate(renderFEN(), history, uuid.toString(), gs, pawnPromotion);
     }
 
     /**
@@ -225,87 +264,134 @@ public class Game {
         // check for checks
         // for white checks
 //        Figure[][] chessboard = renderChessBoard();
-        System.out.println("check game status");
-        King king = (King) white.getFigures().stream()
+        King king = (King) stream(chessboard).flatMap(Arrays::stream)
+                .filter(Objects::nonNull)
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
+                .filter(Figure::isWhite)
                 .findAny()
                 .orElse(null);
         if (king == null) {
             return GameStatus.WTF_KING_DISSAPEARED;
         }
-        for (Figure figure : black.getFigures()) {
-            if (!toExclude.contains(figure) && figure != king) {
-                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
-                    // check if the white king can move
-                    if (!checkKingsMovement(king)) {
-                        // white king cant move, checkmate
-                        return GameStatus.WHITE_CHECKMATE;
-                    }
-                    // white king in danger!
-                    return GameStatus.WHITE_CHECK;
-                }
+//        for (Figure figure : black.getFigures()) {
+//            if (!toExclude.contains(figure) && figure != king) {
+//                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
+//                    // check if the white king can move
+//                    if (!checkKingsMovement(king)) {
+//                        // white king cant move, checkmate
+//                        return GameStatus.WHITE_CHECKMATE;
+//                    }
+//                    // white king in danger!
+//                    return GameStatus.WHITE_CHECK;
+//                }
+//            }
+//        }
+
+        King finalKing = king;
+        Figure[] farr = new Figure[]{getBlackFigures().stream()
+                .filter(figure -> figure != finalKing &&
+                        !toExclude.contains(figure) &&
+                        figure.isValidMove(finalKing.getCoordX(), finalKing.getCoordY(), this)
+                )
+                .findAny()
+                .orElse(null)};
+
+        GameStatus gs = GameStatus.RUNNING;
+        for (Figure f : farr) {
+            if (f != null) {
+                gs = GameStatus.WHITE_CHECK;
+                break;
             }
+        }
+
+        if (gs == GameStatus.WHITE_CHECK) {
+            if (!checkKingsMovement(king)) return GameStatus.WHITE_CHECKMATE;
+            return gs;
         }
 
         // check for black checks
-        king = (King) black.getFigures().stream()
+        king = (King) stream(chessboard).flatMap(Arrays::stream)
+                .filter(Objects::nonNull)
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
+                .filter(k -> !k.isWhite())
                 .findAny()
                 .orElse(null);
         if (king == null) {
             return GameStatus.WTF_KING_DISSAPEARED;
         }
 
-        for (Figure figure : white.getFigures()) {
-            if (!toExclude.contains(figure) && figure != king) {
-                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
-                    // check if the white king can move
-                    if (!checkKingsMovement(king)) {
-                        // black king cant move, checkmate
-                        return GameStatus.BLACK_CHECKMATE;
-                    }
-                    // black king in danger!
-                    return GameStatus.BLACK_CHECK;
-                }
+//        for (Figure figure : white.getFigures()) {
+//            if (!toExclude.contains(figure) && figure != king) {
+//                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
+//                    // check if the white king can move
+//                    if (!checkKingsMovement(king)) {
+//                        // black king cant move, checkmate
+//                        return GameStatus.BLACK_CHECKMATE;
+//                    }
+//                    // black king in danger!
+//                    return GameStatus.BLACK_CHECK;
+//                }
+//            }
+//        }
+
+        King finalKing1 = king;
+        farr = new Figure[]{getWhiteFigures().stream()
+                .filter(figure -> figure != finalKing1 &&
+                        !toExclude.contains(figure) &&
+                        figure.isValidMove(finalKing1.getCoordX(), finalKing1.getCoordY(), this)
+                )
+                .findAny()
+                .orElse(null)};
+
+        for (Figure f : farr) {
+            if (f != null) {
+                gs = GameStatus.BLACK_CHECK;
+                break;
             }
         }
 
+        if (gs == GameStatus.BLACK_CHECK) {
+            if (!checkKingsMovement(king)) return GameStatus.BLACK_CHECKMATE;
+            return gs;
+        }
+
+
         // stalemate bi mogu prevert premike USEH figur igralca ne sam kralja js pač ne znam brt
         // preverjam za igralca k ma nasledn premik
-        // loopam čez figure in čez celo polje dokler ne najdem ene k se jo da premaknt
-        boolean isthereone = false;
+        // loopam čez figure in čez celo polje, dokler ne najdem ene k se jo da premaknt
+        boolean isthereone;
         if (isWhitesTurn()) {
-            for (Figure figure: black.getFigures()) {
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        if (figure.isValidMove(i, j, this) && (i != figure.getCoordX() && j != figure.getCoordY())) {
-                            isthereone = true;
-                            break;
-                        }
-                    }
-                    if (isthereone) break;
-                }
-                if (isthereone) break;
-            }
+            isthereone = hasAFigureThatCanMove(getBlackFigures());
 
         } else {
-            for (Figure figure: white.getFigures()) {
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        if (figure.isValidMove(i, j, this) && (i != figure.getCoordX() && j != figure.getCoordY())) {
-                            isthereone = true;
-                            break;
-                        }
-                    }
-                    if (isthereone) break;
-                }
-                if (isthereone) break;
-            }
-
+            isthereone = hasAFigureThatCanMove(getWhiteFigures());
         }
         if (!isthereone) return GameStatus.STALEMATE;
 
         return GameStatus.RUNNING;
+    }
+
+    /**
+     * @param figures tabela figur
+     * @return a ma figuro k se loh premakne
+     */
+    private boolean hasAFigureThatCanMove(List<Figure> figures) {
+        boolean isthereone = false;
+        for (Figure figure: figures) {
+            if (figure != null) {
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (figure.isValidMove(i, j, this)) {
+                            isthereone = true;
+                            break;
+                        }
+                    }
+                    if (isthereone) break;
+                }
+                if (isthereone) break;
+            }
+        }
+        return isthereone;
     }
 
     /**
@@ -351,4 +437,13 @@ public class Game {
     public void addToHistory(Move move) {
         history.add(move);
     }
+
+    public List<Figure> getBlackFigures() {
+        return stream(chessboard).flatMap(Arrays::stream).filter(Objects::nonNull).filter(figure -> !figure.isWhite()).collect(toList());
+    }
+
+    public List<Figure> getWhiteFigures() {
+        return stream(chessboard).flatMap(Arrays::stream).filter(Objects::nonNull).filter(Figure::isWhite).collect(toList());
+    }
+
 }

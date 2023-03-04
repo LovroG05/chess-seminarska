@@ -28,7 +28,6 @@ public class Pawn extends Figure {
      *
      */
     public boolean isValidMove(int new_x, int new_y, Game game) {
-        Figure[][] chessboard = game.renderChessBoard();
         if (getCoordX() == new_x && getCoordY() == new_y) {
             return false; // no move
         }
@@ -36,7 +35,7 @@ public class Pawn extends Figure {
         if ((Math.abs(new_y - getCoordY()) == 1) && (Math.abs(new_x - getCoordX()) == 0)) {
             // distance is 1
             // checks if forward relative to colour and SPOT IS EMPTY BECAUSE IT CANNOT EAT FORWARD
-            if (chessboard[new_y][new_x] == null) {
+            if (game.getChessboard()[new_y][new_x] == null) {
                 if (isWhite()) {
                     if (getCoordY() < new_y) {
                         return true;
@@ -55,25 +54,25 @@ public class Pawn extends Figure {
                 getNOfMoves() == 0) {
             // distance is 2
             // checks if forward
-            if (chessboard[new_y][new_x] == null) {
+            if (game.getChessboard()[new_y][new_x] == null) {
                 if (isWhite()) {
-                    return (getCoordY() < new_y) && isWalkable(new_x, new_y, chessboard);
+                    return (getCoordY() < new_y) && isWalkable(new_x, new_y, game.getChessboard());
                 } else {
-                    return (getCoordY() > new_y) && isWalkable(new_x, new_y, chessboard);
+                    return (getCoordY() > new_y) && isWalkable(new_x, new_y, game.getChessboard());
                 }
             }
         }
 
         if ((Math.abs(getCoordX() - new_x) == 1) && (Math.abs(getCoordY() - new_y) == 1)) {
             // eating, diagonal by 1
-            if ((chessboard[new_y][new_x] != null) && (chessboard[new_y][new_x].isWhite() != isWhite())) return true;
+            if ((game.getChessboard()[new_y][new_x] != null) && (game.getChessboard()[new_y][new_x].isWhite() != isWhite())) return true;
 
             // en passant
             if (isWhite()) {
                 if (getCoordY() == 4) {
                     // The capturing pawn must have advanced exactly three ranks to perform this move
-                    if (chessboard[new_y-1][new_x].getName() == FigureName.PAWN) {
-                        Figure opposingPawn = chessboard[new_y-1][new_x];
+                    if (game.getChessboard()[new_y-1][new_x].getName() == FigureName.PAWN) {
+                        Figure opposingPawn = game.getChessboard()[new_y-1][new_x];
                         if (opposingPawn.getNOfMoves() == 1) {
                             if (game.getHistory().get(game.getHistory().size()-1).figure() == opposingPawn) {
                                 // en passant possible
@@ -86,8 +85,8 @@ public class Pawn extends Figure {
             } else {
                 if (getCoordY() == 3) {
                     // The capturing pawn must have advanced exactly three ranks to perform this move
-                    if (chessboard[new_y+1][new_x].getName() == FigureName.PAWN) {
-                        Figure opposingPawn = chessboard[new_y+1][new_x];
+                    if (game.getChessboard()[new_y+1][new_x].getName() == FigureName.PAWN) {
+                        Figure opposingPawn = game.getChessboard()[new_y+1][new_x];
                         if (opposingPawn.getNOfMoves() == 1) {
                             if (game.getHistory().get(game.getHistory().size()-1).figure() == opposingPawn) {
                                 // en passant possible

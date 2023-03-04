@@ -113,7 +113,7 @@ public class GameController {
         for (Game game : games) {
             if (game.getUuid().equals(uuid)) {
                 ObjectMapper mapper = new ObjectMapper();
-                return mapper.writeValueAsString(game.renderChessBoard());
+                return mapper.writeValueAsString(game.getChessboard());
             }
         }
 
@@ -150,15 +150,8 @@ public class GameController {
                             return mapper.writeValueAsString(new GameUpdate(game.renderFEN(), game.getHistory(), uuid.toString(), game.checkGameStatus(), game.isCanPawnPromote()));
                         }
                     }
-                    if (ppi.isWhite()) {
-                        int f = game.getWhite().getFigures().indexOf(game.renderChessBoard()[ppi.y()][ppi.x()]);
 
-                        game.getWhite().getFigures().set(f, newf);
-                    } else {
-                        int f = game.getBlack().getFigures().indexOf(game.renderChessBoard()[ppi.y()][ppi.x()]);
-
-                        game.getBlack().getFigures().set(f, newf);
-                    }
+                    game.getChessboard()[ppi.y()][ppi.x()] = newf;
                 }
                 game.setCanPawnPromote(false);
                 return mapper.writeValueAsString(new GameUpdate(game.renderFEN(), game.getHistory(), uuid.toString(), game.checkGameStatus(), false));

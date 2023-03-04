@@ -28,7 +28,7 @@ public class Queen extends Figure {
      *
      */
     public boolean isValidMove(int new_x, int new_y, Game game) {
-        Figure[][] chessboard = game.renderChessBoard();
+        Figure[][] chessboard = game.getChessboard();
         if (getCoordX() == new_x && getCoordY() == new_y) {
             return false;
         }
