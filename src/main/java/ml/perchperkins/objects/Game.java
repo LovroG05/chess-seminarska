@@ -263,7 +263,6 @@ public class Game {
 
         // check for checks
         // for white checks
-//        Figure[][] chessboard = renderChessBoard();
         King king = (King) stream(chessboard).flatMap(Arrays::stream)
                 .filter(Objects::nonNull)
                 .filter(figure -> FigureName.KING.equals(figure.getName()))
@@ -273,19 +272,6 @@ public class Game {
         if (king == null) {
             return GameStatus.WTF_KING_DISSAPEARED;
         }
-//        for (Figure figure : black.getFigures()) {
-//            if (!toExclude.contains(figure) && figure != king) {
-//                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
-//                    // check if the white king can move
-//                    if (!checkKingsMovement(king)) {
-//                        // white king cant move, checkmate
-//                        return GameStatus.WHITE_CHECKMATE;
-//                    }
-//                    // white king in danger!
-//                    return GameStatus.WHITE_CHECK;
-//                }
-//            }
-//        }
 
         King finalKing = king;
         Figure[] farr = new Figure[]{getBlackFigures().stream()
@@ -320,20 +306,6 @@ public class Game {
             return GameStatus.WTF_KING_DISSAPEARED;
         }
 
-//        for (Figure figure : white.getFigures()) {
-//            if (!toExclude.contains(figure) && figure != king) {
-//                if (figure.isValidMove(king.getCoordX(), king.getCoordY(), this)) {
-//                    // check if the white king can move
-//                    if (!checkKingsMovement(king)) {
-//                        // black king cant move, checkmate
-//                        return GameStatus.BLACK_CHECKMATE;
-//                    }
-//                    // black king in danger!
-//                    return GameStatus.BLACK_CHECK;
-//                }
-//            }
-//        }
-
         King finalKing1 = king;
         farr = new Figure[]{getWhiteFigures().stream()
                 .filter(figure -> figure != finalKing1 &&
@@ -357,6 +329,7 @@ public class Game {
 
 
         // stalemate bi mogu prevert premike USEH figur igralca ne sam kralja js pač ne znam brt
+        // za usak premik bi mogu prevert tut to metodo kakšn vpliv povzroči na outcome igre TODO
         // preverjam za igralca k ma nasledn premik
         // loopam čez figure in čez celo polje, dokler ne najdem ene k se jo da premaknt
         boolean isthereone;
@@ -414,7 +387,7 @@ public class Game {
      * @param king Figura kralja
      * @return boolean true, če se kralj lahko premakne
      */
-    private boolean checkKingsMovement(Figure king) {
+    public boolean checkKingsMovement(Figure king) {
         boolean step1 = king.isValidMove(king.getCoordX() + 1, king.getCoordY(), this);
         boolean step2 = king.isValidMove(king.getCoordX() - 1, king.getCoordY(), this);
         boolean step3 = king.isValidMove(king.getCoordX(), king.getCoordY() + 1, this);
