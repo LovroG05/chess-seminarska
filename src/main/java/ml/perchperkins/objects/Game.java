@@ -232,11 +232,11 @@ public class Game {
 
         canPawnPromote = pawnPromotion;
 
-        gs = checkGameStatus();
-
         whitesTurn = !whitesTurn;
 
-        return  new GameUpdate(renderFEN(), history, uuid.toString(), gs, pawnPromotion);
+        gs = checkGameStatus();
+
+        return new GameUpdate(renderFEN(), history, uuid.toString(), gs, pawnPromotion);
     }
 
     /**
@@ -329,7 +329,7 @@ public class Game {
 
 
         // stalemate bi mogu prevert premike USEH figur igralca ne sam kralja js pač ne znam brt
-        // za usak premik bi mogu prevert tut to metodo kakšn vpliv povzroči na outcome igre TODO
+        // za usak premik bi mogu prevert tut to metodo kakšn vpliv povzroči na outcome igre TODO IMPORTANT VERY VERY MUCHOS
         // preverjam za igralca k ma nasledn premik
         // loopam čez figure in čez celo polje, dokler ne najdem ene k se jo da premaknt
         boolean isthereone;
@@ -354,7 +354,7 @@ public class Game {
             if (figure != null) {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        if (figure.isValidMove(i, j, this)) {
+                        if (figure.isValidMove(i, j, this) && !figure.causesCheck(this)) {
                             isthereone = true;
                             break;
                         }

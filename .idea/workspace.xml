@@ -123,6 +123,8 @@
       <workItem from="1677497492885" duration="2634000" />
       <workItem from="1677942916448" duration="2518000" />
       <workItem from="1678031024627" duration="1038000" />
+      <workItem from="1678702391140" duration="18000" />
+      <workItem from="1678705423097" duration="4472000" />
     </task>
     <servers />
   </component>
@@ -155,7 +157,17 @@
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="38" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java</url>
+          <line>126</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/chess_seminarska$Main.ic" NAME="Main Coverage Results" MODIFIED="1678710379891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ml.perchperkins.*</FILTER>
+    </SUITE>
   </component>
 </project>

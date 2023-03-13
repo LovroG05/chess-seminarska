@@ -7,11 +7,14 @@ import ml.perchperkins.objects.enums.FigureName;
 import ml.perchperkins.objects.enums.GameStatus;
 import ml.perchperkins.objects.figures.King;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Razred Figure predstavlja šahovsko figuro
@@ -118,5 +121,29 @@ public class Figure {
         coordX = new_x;
         coordY = new_y;
         nOfMoves++;
+    }
+
+    public boolean causesCheck(Game game) {
+        King king = (King) stream(game.getChessboard()).flatMap(Arrays::stream)
+                .filter(Objects::nonNull)
+                .filter(figure -> FigureName.KING.equals(figure.getName()))
+                .filter(figure -> figure.isWhite() == this.isWhite())
+                .findAny()
+                .orElse(null);
+        if (king == null) {
+            return true;
+        }
+
+        List<Figure> list = new ArrayList<>();
+        for (Figure figure : (this.isWhite() ? game.getBlackFigures() : game.getWhiteFigures())) {
+            if (figure != null &&
+                    figure != king &&
+                    figure != this &&
+                    figure.isValidMove(king.getCoordX(), king.getCoordY(), game)) {
+                list.add(figure);
+            }
+        }
+
+        return list.size() == 0;
     }
 }
