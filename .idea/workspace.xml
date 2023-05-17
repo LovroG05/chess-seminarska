@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="16b592d5-a5b3-4833-8a32-76453212f8d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Game.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +19,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -69,7 +70,7 @@
       <recent name="ml.perchperkins.objects.io" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="TestNG.TestChess.testStalemate">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ml.perchperkins.Main" />
       <module name="chess-seminarska" />
@@ -83,8 +84,27 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestChess.testStalemate" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="chess-seminarska" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests" />
+      <option name="MAIN_CLASS_NAME" value="tests.TestChess" />
+      <option name="METHOD_NAME" value="testStalemate" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="TestNG.TestChess.testStalemate" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -124,7 +144,11 @@
       <workItem from="1677942916448" duration="2518000" />
       <workItem from="1678031024627" duration="1038000" />
       <workItem from="1678702391140" duration="18000" />
-      <workItem from="1678705423097" duration="4472000" />
+      <workItem from="1678705423097" duration="4697000" />
+      <workItem from="1679908937711" duration="21000" />
+      <workItem from="1680513226272" duration="6579000" />
+      <workItem from="1682327624855" duration="4541000" />
+      <workItem from="1682334354414" duration="824000" />
     </task>
     <servers />
   </component>
@@ -157,11 +181,6 @@
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="38" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ml/perchperkins/objects/Figure.java</url>
-          <line>126</line>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

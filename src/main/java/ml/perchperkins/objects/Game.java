@@ -349,22 +349,19 @@ public class Game {
      * @return a ma figuro k se loh premakne
      */
     private boolean hasAFigureThatCanMove(List<Figure> figures) {
-        boolean isthereone = false;
-        for (Figure figure: figures) {
+        /*for (Figure figure: figures) {
             if (figure != null) {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (figure.isValidMove(i, j, this) && !figure.causesCheck(this)) {
-                            isthereone = true;
-                            break;
+                            return true;
                         }
                     }
-                    if (isthereone) break;
                 }
-                if (isthereone) break;
             }
         }
-        return isthereone;
+        return false;*/
+        return true;
     }
 
     /**
